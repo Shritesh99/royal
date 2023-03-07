@@ -1,5 +1,5 @@
 import graphene
-
+import graphql_social_auth
 from graphql_auth.schema import UserQuery, MeQuery
 from graphql_auth import mutations
 
@@ -18,6 +18,7 @@ class AuthMutation(graphene.ObjectType):
     verify_secondary_email = mutations.VerifySecondaryEmail.Field()
     swap_emails = mutations.SwapEmails.Field()
     remove_secondary_email = mutations.RemoveSecondaryEmail.Field()
+    social_auth = graphql_social_auth.SocialAuthJWT.Field()
 
     # django-graphql-jwt inheritances
     token_auth = mutations.ObtainJSONWebToken.Field()

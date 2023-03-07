@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "graphene_django",
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     "graphql_auth",
+    'social_django',
     'users'
 ]
 
@@ -108,6 +109,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.0/ref/contrib/auth/#authentication-backends-reference
 
 AUTHENTICATION_BACKENDS = [
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.google.GoogleOpenId',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.google.GoogleOAuth',
     "graphql_auth.backends.GraphQLAuthBackend",
     'django.contrib.auth.backends.ModelBackend',
 ]
