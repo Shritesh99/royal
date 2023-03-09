@@ -1,7 +1,26 @@
 from django.contrib.auth import get_user_model
 
 import graphene
+import graphql_social_auth
+from graphql_jwt.shortcuts import get_token
+from graphql_jwt.shortcuts import create_refresh_token
 from graphene_django import DjangoObjectType
+
+class SocialAuth(graphql_social_auth.SocialAuthJWT):
+    refresh_token = graphene.String()
+
+    @classmethod
+    def resolve(cls, root, info, social, **kwargs):
+        if social.user.refresh_tokens.count() >= 1:
+            refresh_token = social.user.refresh_tokens.last()
+        else:
+            refresh_token = create_refresh_token(social.user)
+
+        return cls(
+            user=social.user,
+            token=get_token(social.user),
+            refresh_token=refresh_token
+        )
 
 
 class UserType(DjangoObjectType):
@@ -30,6 +49,7 @@ class CreateUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
+    social_user = SocialAuth.Field()
 
 
 class Query(graphene.ObjectType):
