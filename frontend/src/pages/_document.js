@@ -5,7 +5,6 @@ export default function Document() {
 	return (
 		<Html lang="en">
 			<Head>
-				<title>...</title>
 				<Link rel="icon" href="/favicon.ico" />
 			</Head>
 			<body>

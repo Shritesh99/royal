@@ -8,7 +8,7 @@ export const Header = () => (
 						href="/"
 						shallow={true}
 						className="navbar-item has-text-primary-light">
-						<p className="is-size-3">...</p>
+						<p className="is-size-3">GRE Application</p>
 					</Link>
 				</div>
 			</div>
