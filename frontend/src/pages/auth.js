@@ -1,26 +1,23 @@
 import { useEffect, useState } from "react";
 import { useGoogleLogin, hasGrantedAllScopesGoogle } from "@react-oauth/google";
 import Image from "next/image";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
-import { ErrorAtom, LoadingAtom } from "../atoms";
+import { ErrorAtom, LoadingAtom, AuthAtom, isLoggedInSelector } from "../atoms";
 import { Constants } from "../utils";
 import img from "../../public/images/19197921.jpg";
 
 export default function Auth() {
-	const [loading, setLoading] = useRecoilState(LoadingAtom);
+	const router = useRouter();
 	const [err, setErr] = useRecoilState(ErrorAtom);
+	const [auth, setAuth] = useRecoilState(AuthAtom);
+	const isLoggedIn = useRecoilValue(isLoggedInSelector);
 	useEffect(() => {
-		setLoading(true);
-		if (localStorage.getItem(Constants.GOOGLE_CLIENT_TOKEN)) {
-			router.replace("/");
-		}
-		setLoading(false);
+		if (isLoggedIn) router.replace("/");
 	}, []);
 	const googleLogin = useGoogleLogin({
 		scope: "https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read",
 		onSuccess: (response) => {
-			console.log(response);
 			const hasAccess = hasGrantedAllScopesGoogle(
 				response,
 				"https://www.googleapis.com/auth/user.birthday.read",
@@ -31,22 +28,24 @@ export default function Auth() {
 				return;
 			}
 			localStorage.setItem(
-				Constants.GOOGLE_CLIENT_TOKEN,
-				credentialResponse.credential
+				Constants.ACCESS_TOKEN,
+				response.access_token
 			);
-			router.push("/");
+			setAuth(response.access_token);
+			router.replace("/");
 		},
 	});
 
-	const router = useRouter();
 	return (
 		<div className="container">
 			<div className="columns is-align-items-center">
 				<div className="column is-one-third ">
 					<div className="title is-1">Let's get Started</div>
-					<button class="button" onClick={() => googleLogin()}>
-						<span class="icon">
-							<i class="fab fa-google"></i>
+					<button
+						className="button"
+						onClick={() => googleLogin()}>
+						<span className="icon">
+							<i className="fab fa-google"></i>
 						</span>
 						<span>Sign In With Google</span>
 					</button>
