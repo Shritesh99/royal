@@ -8,7 +8,7 @@ class FSLSMQuestionType(DjangoObjectType):
         model = FSLSMQuestion
 
 class Query(graphene.ObjectType):
-    fslsm_questions = graphene.Field(FSLSMQuestion)
+    fslsm_questions = graphene.List(FSLSMQuestionType)
 
     @login_required
     def resolve_fslsm_questions(self, info):
