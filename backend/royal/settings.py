@@ -36,6 +36,17 @@ CSRF_TRUSTED_ORIGINS = env("DJANGO_ALLOWED_CLIENTS").split(",")
 CORS_ALLOWED_ORIGINS = env("DJANGO_ALLOWED_CLIENTS").split(",")
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'origin',
+    'dnt',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with']
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
 # Application definition
 
