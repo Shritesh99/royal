@@ -7,10 +7,13 @@ from graphql_jwt.shortcuts import create_refresh_token
 from graphene_django import DjangoObjectType
 from graphql_jwt.decorators import login_required
 from .models import AppUser
+from djongo.models.fields import ObjectIdField
+from graphene_django.converter import convert_django_field
 
 class UserType(DjangoObjectType):
     class Meta:
         model = AppUser
+        exclude = ('_id',)
 
 class SocialAuth(graphql_social_auth.SocialAuthMutation):
     user = graphene.Field(UserType)
@@ -29,7 +32,7 @@ class SocialAuth(graphql_social_auth.SocialAuthMutation):
         else:
             refresh_token = create_refresh_token(social.user)
         return cls(
-            user=user
+            user=user,
             social=social,
             token=get_token(social.user),
             refresh_token=refresh_token

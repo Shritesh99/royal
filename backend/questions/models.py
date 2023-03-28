@@ -29,6 +29,10 @@ class GREQuestion(models.Model):
     
     def __str__(self):
         return self._id
+    
+    @property
+    def get_tags(self):
+        return self.tags.all()
 
 class FSLSMQuestion(models.Model):
     _id = models.Model
