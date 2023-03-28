@@ -1,10 +1,11 @@
 import graphene
 import graphql_jwt
-import graphql_social_auth
 import users.schema
+import questions.schema
 
 class Query(
     users.schema.Query,
+    questions.schema.Query,
     graphene.ObjectType,
 ):
     pass

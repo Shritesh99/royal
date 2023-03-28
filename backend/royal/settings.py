@@ -20,7 +20,6 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -34,6 +33,8 @@ ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS").split(",")
 
 CSRF_TRUSTED_ORIGINS = env("DJANGO_ALLOWED_CLIENTS").split(",")
 
+# SOCIAL_AUTH_USER_MODEL = "users.AppUser"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,8 +46,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "graphene_django",
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'taggit',
     'social_django',
-    'users'
+    'users',
+    'questions'
 ]
 
 MIDDLEWARE = [
@@ -198,14 +201,24 @@ SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.user.user_details',
 ]
 
+SOCIAL_AUTH_EMAIL_REQUIRED = True
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', default='')
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', default='')
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile',
-    'openid'
+    'https://www.googleapis.com/auth/userinfo.profile'
+]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = [
+    ('id', 'id'),
+    ('email', 'email'),
+    ('picture', 'picture'),
+    ('verified_email', 'verified_email'),
+    ('name', 'name'),
+    ('given_name', 'first_name'),
+    ('family_name', 'last_name'),
 ]
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
