@@ -10,9 +10,10 @@ from .models import AppUser
 
 class UserType(DjangoObjectType):
     class Meta:
-        model = get_user_model()
+        model = AppUser
 
 class SocialAuth(graphql_social_auth.SocialAuthMutation):
+    user = graphene.Field(UserType)
     refresh_token = graphene.String()
     token = graphene.String()
 
@@ -28,6 +29,7 @@ class SocialAuth(graphql_social_auth.SocialAuthMutation):
         else:
             refresh_token = create_refresh_token(social.user)
         return cls(
+            user=user
             social=social,
             token=get_token(social.user),
             refresh_token=refresh_token
