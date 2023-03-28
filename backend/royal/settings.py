@@ -33,6 +33,8 @@ ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS").split(",")
 
 CSRF_TRUSTED_ORIGINS = env("DJANGO_ALLOWED_CLIENTS").split(",")
 
+CORS_ALLOWED_ORIGINS = env("DJANGO_ALLOWED_CLIENTS").split(",")
+
 # SOCIAL_AUTH_USER_MODEL = "users.AppUser"
 
 # Application definition
@@ -47,6 +49,7 @@ INSTALLED_APPS = [
     "graphene_django",
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'taggit',
+    'corsheaders',
     'social_django',
     'users',
     'questions'
@@ -55,6 +58,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
