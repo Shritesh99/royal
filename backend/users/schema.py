@@ -26,10 +26,9 @@ class SocialAuth(graphql_social_auth.SocialAuthMutation):
     @classmethod
     def resolve(cls, root, info, social, **kwargs):
         extra_data = social.extra_data
-        user = AppUser.objects.filter(user=social.user)
-        if not user:
-            user = AppUser(user=social.user, picture=extra_data['picture'])
-            user.save()
+        user = AppUser.objects.get_or_create(user=social.user)
+        user.picture = extra_data['picture']
+        user.save()
         if social.user.refresh_tokens.count() >= 1:
             refresh_token = social.user.refresh_tokens.last()
         else:
