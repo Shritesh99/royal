@@ -40,12 +40,28 @@ class SocialAuth(graphql_social_auth.SocialAuthMutation):
             refresh_token=refresh_token
         )
 
+class DobGender(graphene.Mutation):
+    success = graphene.Boolean()
+    class Arguments:
+        dob = graphene.Date()
+        gender = graphene.String()
+
+    @login_required
+    def mutate(self, info, dob, gender):
+        user = AppUser.objects.filter(user=info.context.user)
+        user.dob = dob
+        user.gender = gender
+        user.save()
+        return DobGender(success=True)
+
 class Mutation(graphene.ObjectType):
     social_user = SocialAuth.Field()
+    add_dob_gender = DobGender.Field()
 
 class Query(graphene.ObjectType):
     me = graphene.Field(AppUserType)
 
     @login_required
     def resolve_me(self, info):
-        return info.context.user
+        user = AppUser.objects.filter(user=info.context.user)
+        return user
