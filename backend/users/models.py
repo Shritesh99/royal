@@ -17,4 +17,4 @@ class AppUser(models.Model):
         verbose_name_plural = 'Social Auths'
     
     def __str__(self):
-        return self._id
+        return str(self._id)

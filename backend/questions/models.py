@@ -12,7 +12,7 @@ class Choice(models.Model):
         verbose_name_plural = 'Choices'
     
     def __str__(self):
-        return self._id
+        return str(self._id)
 
 
 class GREQuestion(models.Model):
@@ -28,7 +28,7 @@ class GREQuestion(models.Model):
         verbose_name_plural = 'GRE Questions'
     
     def __str__(self):
-        return self._id
+        return str(self._id)
     
     @property
     def get_tags(self):
@@ -46,4 +46,4 @@ class FSLSMQuestion(models.Model):
         verbose_name_plural = 'FLSM Questions'
     
     def __str__(self):
-        return self._id
+        return str(self._id)
