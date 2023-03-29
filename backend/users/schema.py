@@ -7,16 +7,19 @@ from graphql_jwt.shortcuts import create_refresh_token
 from graphene_django import DjangoObjectType
 from graphql_jwt.decorators import login_required
 from .models import AppUser
-from djongo.models.fields import ObjectIdField
-from graphene_django.converter import convert_django_field
+from django.contrib.auth import get_user_model
 
 class UserType(DjangoObjectType):
+    class Meta:
+        model = get_user_model()
+
+class AppUserType(DjangoObjectType):
     class Meta:
         model = AppUser
         exclude = ('_id',)
 
 class SocialAuth(graphql_social_auth.SocialAuthMutation):
-    user = graphene.Field(UserType)
+    user = graphene.Field(AppUserType)
     refresh_token = graphene.String()
     token = graphene.String()
 
@@ -33,7 +36,6 @@ class SocialAuth(graphql_social_auth.SocialAuthMutation):
             refresh_token = create_refresh_token(social.user)
         return cls(
             user=user,
-            social=social,
             token=get_token(social.user),
             refresh_token=refresh_token
         )
@@ -42,7 +44,7 @@ class Mutation(graphene.ObjectType):
     social_user = SocialAuth.Field()
 
 class Query(graphene.ObjectType):
-    me = graphene.Field(UserType)
+    me = graphene.Field(AppUserType)
 
     @login_required
     def resolve_me(self, info):
