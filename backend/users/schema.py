@@ -65,5 +65,5 @@ class Query(graphene.ObjectType):
 
     @login_required
     def resolve_me(self, info):
-        user = AppUser.objects.filter(user=info.context.user)
+        user = AppUser.objects.filter(user=info.context.user).first()
         return user
