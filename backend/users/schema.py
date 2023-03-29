@@ -26,7 +26,7 @@ class SocialAuth(graphql_social_auth.SocialAuthMutation):
     @classmethod
     def resolve(cls, root, info, social, **kwargs):
         extra_data = social.extra_data
-        user = AppUser.objects.get_or_create(user=social.user)
+        user = AppUser.objects.get_or_create(user=social.user)[0]
         user.picture = extra_data['picture']
         user.save()
         if social.user.refresh_tokens.count() >= 1:
@@ -47,7 +47,7 @@ class DobGender(graphene.Mutation):
 
     @login_required
     def mutate(self, info, dob, gender):
-        user = AppUser.objects.filter(user=info.context.user)
+        user = AppUser.objects.filter(user=info.context.user).first()
         user.dob = dob
         user.gender = gender
         user.save()
