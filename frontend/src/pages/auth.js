@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useGoogleLogin, hasGrantedAllScopesGoogle } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
+import { useMutation } from "@apollo/client";
 import { ErrorAtom, LoadingAtom, AuthAtom, isLoggedInSelector } from "../atoms";
 import { Constants } from "../utils";
+import { SocialUserGQL } from "../gql";
+import { User } from "../models";
 import img from "../../public/images/19197921.jpg";
 
 export default function Auth() {
@@ -12,27 +15,36 @@ export default function Auth() {
 	const [err, setErr] = useRecoilState(ErrorAtom);
 	const [auth, setAuth] = useRecoilState(AuthAtom);
 	const isLoggedIn = useRecoilValue(isLoggedInSelector);
+
+	const [useSocialUser] = useMutation(SocialUserGQL, {
+		onCompleted: (data) => {
+			localStorage.setItem(
+				Constants.ACCESS_TOKEN,
+				data.socialUser.token
+			);
+			localStorage.setItem(
+				Constants.REFERESH_TOKEN,
+				data.socialUser.refreshToken
+			);
+			const user = new User(data.socialUser.user);
+			setAuth(user);
+			router.replace("/");
+		},
+		onError: (error) => {
+			setErr(error.message);
+		},
+	});
+
 	useEffect(() => {
 		if (isLoggedIn) router.replace("/");
 	}, []);
 	const googleLogin = useGoogleLogin({
-		scope: "https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read",
 		onSuccess: (response) => {
-			const hasAccess = hasGrantedAllScopesGoogle(
-				response,
-				"https://www.googleapis.com/auth/user.birthday.read",
-				"https://www.googleapis.com/auth/user.gender.read"
-			);
-			if (!hasAccess) {
-				setErr("Not Given Proper Access");
-				return;
-			}
-			localStorage.setItem(
-				Constants.ACCESS_TOKEN,
-				response.access_token
-			);
-			setAuth(response.access_token);
-			router.replace("/");
+			useSocialUser({
+				variables: {
+					token: response.access_token,
+				},
+			});
 		},
 	});
 
@@ -51,7 +63,9 @@ export default function Auth() {
 					</button>
 				</div>
 				<div className="column is-two-thirds">
-					<Image src={img} alt="img" />
+					<figure className="image">
+						<Image src={img} alt="img" />
+					</figure>
 				</div>
 			</div>
 		</div>

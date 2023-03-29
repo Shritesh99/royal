@@ -12,7 +12,6 @@ export const Header = () => {
 		googleLogout();
 		setAuth(null);
 		localStorage.clear();
-		router.replace("/auth");
 	};
 	return (
 		<div className="hero-head">
@@ -29,8 +28,16 @@ export const Header = () => {
 					{isLoggedIn ? (
 						<div className="navbar-end">
 							<div className="navbar-item has-dropdown is-hoverable is-align-items-center">
-								<i className="fa-regular fa-user m-3 box"></i>
-
+								<figure className="image box m-3">
+									{auth.picture !== null ? (
+										<img
+											className="is-rounded"
+											src={auth.picture}
+										/>
+									) : (
+										<i className="fa-regular fa-user" />
+									)}
+								</figure>
 								<div className="navbar-dropdown is-right">
 									<a className="navbar-item">
 										Profile

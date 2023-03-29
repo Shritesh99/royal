@@ -5,12 +5,4 @@ const ErrorAtom = atom({
 	default: "",
 });
 
-const isEmptyErrorSelector = selector({
-	key: "isEmptyError",
-	get: ({ get }) => {
-		if (get(ErrorAtom).length === 0) return false;
-		return get(ErrorAtom);
-	},
-});
-
-export { ErrorAtom, isEmptyErrorSelector };
+export { ErrorAtom };
