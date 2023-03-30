@@ -3,6 +3,10 @@ from graphene_django import DjangoObjectType
 from questions.models import *
 from graphql_jwt.decorators import login_required
 
+class ChoiceType(DjangoObjectType):
+    class Meta:
+        model = Choice 
+
 class FSLSMQuestionType(DjangoObjectType):
     class Meta:
         model = FSLSMQuestion

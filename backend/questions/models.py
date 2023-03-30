@@ -4,23 +4,21 @@ from djongo import models
 from taggit.managers import TaggableManager
 
 class Choice(models.Model):
-    _id = models.ObjectIdField()
     text = models.TextField(blank=False)
     
     class Meta:
         verbose_name = 'Choice'
         verbose_name_plural = 'Choices'
-    
+        
     def __str__(self):
-        return str(self._id)
+        return str(self.text)
 
 
 class GREQuestion(models.Model):
-    _id = models.ObjectIdField()
     text = models.TextField(blank=False)
-    answer = models.OneToOneField(Choice, on_delete=models.CASCADE, related_name="Answer")
+    answer = models.OneToOneField(Choice, null=True, on_delete=models.SET_NULL, related_name="Answer")
     difficulty = models.IntegerField(blank=False, default=1) # 1-5 (5 hard)
-    choices = models.ForeignKey(Choice, on_delete=models.CASCADE, related_name="Choices")
+    choices = models.ManyToManyField(Choice, blank=True)
     tags = TaggableManager()
     
     class Meta:
@@ -28,17 +26,16 @@ class GREQuestion(models.Model):
         verbose_name_plural = 'GRE Questions'
     
     def __str__(self):
-        return str(self._id)
+        return str(self.text)
     
     @property
     def get_tags(self):
         return self.tags.all()
 
 class FSLSMQuestion(models.Model):
-    _id = models.Model
     order = models.IntegerField(unique=True, null=False)
     text = models.TextField(blank=False)
-    choices = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    choices = models.ManyToManyField(Choice, blank=True)
     
     class Meta:
         ordering = ['order']
@@ -46,4 +43,4 @@ class FSLSMQuestion(models.Model):
         verbose_name_plural = 'FLSM Questions'
     
     def __str__(self):
-        return str(self._id)
+        return str(self.text)
