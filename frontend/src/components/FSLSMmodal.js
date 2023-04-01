@@ -2,15 +2,26 @@ import "react-day-picker/dist/style.css";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { ErrorAtom, FSLSMQuestionModalAtom } from "../atoms";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useLazyQuery } from "@apollo/client";
 import { FSLSMQuestions, AddFSLSMquestionsResponse } from "../gql";
 import { Loading } from "./Loading";
 
 export const FSLSMQuestionModal = () => {
+	const [data, setData] = useState(null);
+	const [loading, setLoading] = useState(false);
 	const [answered, setAnswered] = useState([]);
 	const [err, setErr] = useRecoilState(ErrorAtom);
 	const [getFSLSMQuestionModalActive, setFSLSMQuestionModalActive] =
 		useRecoilState(FSLSMQuestionModalAtom);
+
+	const [getQuestions] = useLazyQuery(FSLSMQuestions, {
+		onCompleted: (response) => {
+			setData(response.fslsmQuestions);
+		},
+		onError: (error) => {
+			setErr(error.message);
+		},
+	});
 
 	const [setFslsmquestionsResponse] = useMutation(
 		AddFSLSMquestionsResponse,
@@ -27,7 +38,9 @@ export const FSLSMQuestionModal = () => {
 			},
 		}
 	);
-	const { loading, error, data } = useQuery(FSLSMQuestions);
+	useEffect(() => {
+		getQuestions();
+	}, []);
 
 	const onSubmit = () => {
 		if (answered.length !== 10) return setErr("Fill the form fully");
@@ -51,7 +64,7 @@ export const FSLSMQuestionModal = () => {
 								Tell us, How do you prefer to learn?
 							</p>
 							{data ? (
-								data.fslsmQuestions.map((e) => (
+								data.map((e) => (
 									<div
 										className="field"
 										key={e.order}>

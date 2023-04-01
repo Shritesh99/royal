@@ -46,7 +46,7 @@ function Application({ Component, pageProps, props }) {
 		} else {
 			getMe();
 		}
-	}, [isLoggedIn]);
+	}, []);
 
 	useEffect(() => {
 		if (err.length !== 0) {
