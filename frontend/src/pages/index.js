@@ -29,9 +29,9 @@ export default function Home({ props }) {
 			setLoading(false);
 			router.replace("/auth");
 		} else {
-			if (!auth.dob || !auth.gender) setDobGenderModal(true);
+			if (!auth.dob || !auth.gender) return setDobGenderModal(true);
 			if (!auth.ls && auth.ls !== "")
-				setFSLSMQuestionModalActive(true);
+				return setFSLSMQuestionModalActive(true);
 		}
 	}, [isLoggedIn]);
 
