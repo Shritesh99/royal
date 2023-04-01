@@ -18,7 +18,7 @@ class AppUserType(DjangoObjectType):
         model = AppUser
         exclude = ('_id',)
 
-class SocialAuth(graphql_social_auth.SocialAuthMutation):
+class SocialAuthMutation(graphql_social_auth.SocialAuthMutation):
     user = graphene.Field(AppUserType)
     refresh_token = graphene.String()
     token = graphene.String()
@@ -42,7 +42,7 @@ class SocialAuth(graphql_social_auth.SocialAuthMutation):
             refresh_token=refresh_token
         )
 
-class DobGender(graphene.Mutation):
+class DobGenderMutation(graphene.Mutation):
     success = graphene.Boolean()
     class Arguments:
         dob = graphene.Date()
@@ -51,14 +51,16 @@ class DobGender(graphene.Mutation):
     @login_required
     def mutate(self, info, dob, gender):
         user = AppUser.objects.filter(user=info.context.user).first()
-        user.dob = dob
-        user.gender = gender
+        if (dob is not None) and (dob != ""):
+            user.dob = dob
+        if(gender is not None) and (gender != ""):
+            user.gender = gender
         user.save()
-        return DobGender(success=True)
+        return DobGenderMutation(success=True)
 
 class Mutation(graphene.ObjectType):
-    social_user = SocialAuth.Field()
-    add_dob_gender = DobGender.Field()
+    social_user = SocialAuthMutation.Field()
+    add_dob_gender = DobGenderMutation.Field()
 
 class Query(graphene.ObjectType):
     me = graphene.Field(AppUserType)
