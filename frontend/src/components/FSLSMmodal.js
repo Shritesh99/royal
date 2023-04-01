@@ -48,7 +48,7 @@ export const FSLSMQuestionModal = () => {
 					) : (
 						<>
 							<p className="field is-size-3">
-								How do you wanna learn?
+								Tell us, How do you prefer to learn?
 							</p>
 							{data ? (
 								data.fslsmQuestions.map((e) => (
