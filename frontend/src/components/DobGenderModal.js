@@ -1,7 +1,12 @@
 import "react-day-picker/dist/style.css";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { ErrorAtom, DobGenderModalAtom } from "../atoms";
+import {
+	ErrorAtom,
+	DobGenderModalAtom,
+	AuthAtom,
+	FSLSMQuestionModalAtom,
+} from "../atoms";
 import { useMutation } from "@apollo/client";
 import { AddDobGender } from "../gql";
 
@@ -11,11 +16,16 @@ export const DobGenderModal = () => {
 	const [err, setErr] = useRecoilState(ErrorAtom);
 	const [dobGenderModalActtive, setDobGenderModal] =
 		useRecoilState(DobGenderModalAtom);
+	const [auth, setAuth] = useRecoilState(AuthAtom);
+	const [getFSLSMQuestionModalActive, setFSLSMQuestionModalActive] =
+		useRecoilState(FSLSMQuestionModalAtom);
 
 	const [setDobGender] = useMutation(AddDobGender, {
 		onCompleted: (data) => {
-			if (data.addDobGender && data.addDobGender.success)
+			if (data.addDobGender && data.addDobGender.success) {
 				setDobGenderModal(false);
+				if (!auth.ls) setFSLSMQuestionModalActive(true);
+			}
 		},
 		onError: (error) => {
 			setErr(error.message);
@@ -23,7 +33,7 @@ export const DobGenderModal = () => {
 	});
 
 	const onSubmit = () => {
-		if (!date) return setErr("No Date of Birth Selected");
+		if (!date) return setErr("No Date or Birth Selected");
 		setDobGender({
 			variables: {
 				dob: date,

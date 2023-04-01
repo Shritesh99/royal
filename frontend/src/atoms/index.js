@@ -1,5 +1,6 @@
 import LoadingAtom from "./LoadingAtom";
 import DobGenderModalAtom from "./DobGender";
+import FSLSMQuestionModalAtom from "./FSLSMAtom";
 import { ErrorAtom, isEmptyErrorSelector } from "./ErrorAtom";
 import { AuthAtom, isLoggedInSelector } from "./AuthAtom";
 
@@ -10,4 +11,5 @@ export {
 	isEmptyErrorSelector,
 	AuthAtom,
 	isLoggedInSelector,
+	FSLSMQuestionModalAtom,
 };

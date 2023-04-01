@@ -8,6 +8,7 @@ export default gql`
 				picture
 				dob
 				gender
+				ls
 				user {
 					firstName
 					lastName

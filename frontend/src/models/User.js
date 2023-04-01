@@ -6,5 +6,6 @@ export class User {
 		this.dob = data.dob;
 		this.gender = data.gender;
 		this.picture = data.picture;
+		this.ls = data.ls;
 	}
 }
