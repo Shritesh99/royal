@@ -57,8 +57,14 @@ function Application({ Component, pageProps, props }) {
 	return (
 		<>
 			<ToastContainer />
-			<DobGenderModal />
-			<FSLSMQuestionModal />
+			{isLoggedIn ? (
+				<>
+					<DobGenderModal />
+					<FSLSMQuestionModal />
+				</>
+			) : (
+				<></>
+			)}
 			<div className="hero-body container">
 				<Component {...pageProps} />
 			</div>
