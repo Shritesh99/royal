@@ -52,7 +52,6 @@ CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 # Application definition
 
 INSTALLED_APPS = [
-    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -61,6 +60,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "graphene_django",
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    "daphne",
     'taggit',
     'corsheaders',
     'social_django',
