@@ -22,7 +22,7 @@ class Choice(models.Model):
 
 class GREQuestion(models.Model):
     text = models.TextField(blank=False)
-    difficulty = models.IntegerField(blank=False, default=1) # 1-5 (5 hard)
+    difficulty = models.IntegerField(blank=False, default=1, help_text="Difficulty on the scale of 1-5, 5 being the most difficult") # 1-5 (5 hard)
     choices = models.ManyToManyField(Choice, blank=True)
     subjects = TaggableManager(through=Subject)
     

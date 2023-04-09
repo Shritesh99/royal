@@ -3,6 +3,7 @@ from graphene_django import DjangoObjectType
 from questions.models import *
 from graphql_jwt.decorators import login_required
 from users.models import AppUser
+import MLE_LearningModel
 
 class ChoiceType(DjangoObjectType):
     class Meta:
@@ -27,8 +28,8 @@ class FSLSMQuestionsMutation(graphene.Mutation):
         user = AppUser.objects.get(user = info.context.user)
         res = {}
         for item in response:
-            res[item.question] = Choice.objects.get(id=item.answer).text
-        user.ls = ""
+            res[str(item.question)] = "A" if FSLSMQuestion.objects.get(order=item.question).choices.first().id == item.answer else "B"
+        user.ls = MLE_LearningModel.determine_learning_style(res)
         user.save()
         return FSLSMQuestionsMutation(success=True)
 
