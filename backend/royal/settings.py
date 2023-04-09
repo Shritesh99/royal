@@ -52,6 +52,7 @@ CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -64,7 +65,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'social_django',
     'users',
-    'questions'
+    'questions',
+    'mock_test'
 ]
 
 MIDDLEWARE = [
@@ -96,6 +98,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "royal.wsgi.application"
+ASGI_APPLICATION = "royal.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -237,3 +240,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = [
 ]
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}

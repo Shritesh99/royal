@@ -6,7 +6,8 @@ from users.models import AppUser
 
 class ChoiceType(DjangoObjectType):
     class Meta:
-        model = Choice 
+        model = Choice
+        exclude=('is_correct',) 
 
 class FSLSMQuestionType(DjangoObjectType):
     class Meta:
@@ -23,10 +24,10 @@ class FSLSMQuestionsMutation(graphene.Mutation):
     
     @login_required
     def mutate(self, info, response):
-        user = AppUser.objects.filter(user = info.context.user).first()
+        user = AppUser.objects.get(user = info.context.user)
         res = {}
         for item in response:
-            res[item.question] = Choice.objects.filter(id=item.answer).first().text
+            res[item.question] = Choice.objects.get(id=item.answer).text
         user.ls = ""
         user.save()
         return FSLSMQuestionsMutation(success=True)
