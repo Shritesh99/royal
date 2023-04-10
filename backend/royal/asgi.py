@@ -26,6 +26,7 @@ django_asgi_app = get_asgi_application()
 
 class GraphqlWsConsumer(channels_graphql_ws.GraphqlWsConsumer):
     async def on_connect(self, payload):
+        print(self.scope)
         self.scope["user"] = await get_user(self.scope)
 
     schema = schm

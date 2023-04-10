@@ -1,13 +1,6 @@
 from djongo import models
 
 # Create your models here.
-from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase
-
-class Subject(TaggedItemBase):
-    question = models.ForeignKey('GREQuestion', on_delete=models.SET_NULL, null= True)
-    def __str__(self):
-        return self.name
 
 class Choice(models.Model):
     text = models.TextField(blank=False)
@@ -20,11 +13,20 @@ class Choice(models.Model):
     def __str__(self):
         return str(self.text)
 
+class FSLSMChoice(models.Model):
+    text = models.TextField(blank=False)
+
+    class Meta:
+        verbose_name = 'FSLSM Choice'
+        verbose_name_plural = 'FSLSM Choices'
+        
+    def __str__(self):
+        return str(self.text)
+    
 class GREQuestion(models.Model):
     text = models.TextField(blank=False)
     difficulty = models.IntegerField(blank=False, default=1, help_text="Difficulty on the scale of 1-5, 5 being the most difficult") # 1-5 (5 hard)
     choices = models.ManyToManyField(Choice, blank=True)
-    subjects = TaggableManager(through=Subject)
     
     class Meta:
         verbose_name = 'GRE Question'
@@ -40,7 +42,7 @@ class GREQuestion(models.Model):
 class FSLSMQuestion(models.Model):
     order = models.IntegerField(unique=True, null=False)
     text = models.TextField(blank=False)
-    choices = models.ManyToManyField(Choice, blank=True)
+    choices = models.ManyToManyField(FSLSMChoice, blank=True)
     
     class Meta:
         ordering = ['order']

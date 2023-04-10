@@ -9,11 +9,6 @@ from mock_test.models import MockTest
 import channels_graphql_ws
 from django.db.models import Count
 
-
-class SubjectType(DjangoObjectType):
-    class Meta:
-        model = Subject
-
 class GREQuestionInTestType(DjangoObjectType):
     class Meta:
         model = GREQuestion
@@ -43,7 +38,14 @@ class MockTestSubscription(channels_graphql_ws.Subscription):
         questionId = graphene.String()
         choiceId = graphene.String()
         time_taken = graphene.Int()
+        
+    @staticmethod
+    def subscribe(root, info, arg1, arg2):
+        """Called when user subscribes."""
 
+        # Return the list of subscription group names.
+        return ["group42"]
+    # @login_required
     @staticmethod
     def publish(payload, info, first, testId, questionId, choiceId, time_taken):
         mock_test = MockTest.objects.get(id=testId)
@@ -65,7 +67,7 @@ class StartTestMutation(graphene.Mutation):
     success = graphene.Boolean()
     test_id = graphene.String()
     
-    @login_required
+    # @login_required
     def mutate(self, info):
         num_questions_per_difficulty = 2
         difficulty_levels = GREQuestion.objects.values_list('difficulty', flat=True).distinct()
@@ -79,14 +81,14 @@ class StartTestMutation(graphene.Mutation):
             else:
                 questions.extend(question_ids)
 
-        selected_questions = GREQuestion.objects.filter(id__in=questions)
+        selected_questions = list(GREQuestion.objects.filter(id__in=questions))
         random.shuffle(selected_questions)
         mock_test = MockTest.objects.create()
         mock_test.questions.add(*selected_questions)
         mock_test.save()
-        user = AppUser.objects.get(user = info.context.user)
-        user.mock_tests.add(mock_test)
-        user.save()
+        # user = AppUser.objects.get(user = info.context.user)
+        # user.mock_tests.add(mock_test)
+        # user.save()
         return StartTestMutation(success = True, test_id = mock_test.id)
 
 class Mutation(graphene.ObjectType):

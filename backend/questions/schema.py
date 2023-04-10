@@ -7,8 +7,7 @@ from ml.MLE_LearningModel import determine_learning_style
 
 class ChoiceType(DjangoObjectType):
     class Meta:
-        model = Choice
-        exclude=('is_correct',) 
+        model = FSLSMChoice
 
 class FSLSMQuestionType(DjangoObjectType):
     class Meta:
