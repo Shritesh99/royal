@@ -50,7 +50,6 @@ def mle(data):
     estimates = np.apply_along_axis(lambda x: np.mean(x), 1, data)
     return estimates
 
-
 # Calculate the MLE estimates for each dimension
 def determine_learning_style(answers):
     dimensions = getDimensions()
@@ -81,24 +80,34 @@ def determine_learning_style(answers):
     estimates = mle(data)
 
     # Determine the learning style based on the MLE estimates
-    style = ""
+    styleSI = ""
+    styleVV = ""
+    styleAR = ""
+    styleSG = ""
     if estimates[0] > 0:
-        style += "Sensing"
+        styleSI += "Sensing"
     else:
-        style += "Intuitive"
+        styleSI += "Intuitive"
     if estimates[1] > 0:
-        style += "-Visual"
+        styleVV += "-Visual"
     else:
-        style += "-Verbal"
+        styleVV += "-Verbal"
     if estimates[2] > 0:
-        style += "-Active"
+        styleAR += "-Active"
     else:
-        style += "-Reflective"
+        styleAR += "-Reflective"
     if estimates[3] > 0:
-        style += "-Sequential"
+        styleSG += "-Sequential"
     else:
-        style += "-Global"
+        styleSG += "-Global"
 
-    return style
+    learning_style = {
+        'SI': styleSI,
+        'VV': styleVV,
+        'AR': styleAR,
+        'SG': styleSG
+    }
+
+    return learning_style
 
 
