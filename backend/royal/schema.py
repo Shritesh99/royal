@@ -7,6 +7,7 @@ import mock_test.schema
 class Query(
     users.schema.Query,
     questions.schema.Query,
+    mock_test.schema.Query,
     graphene.ObjectType,
 ):
     pass
