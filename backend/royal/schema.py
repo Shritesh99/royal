@@ -21,7 +21,4 @@ class Mutation(
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
 
-class Subscription(mock_test.schema.Subscription, graphene.ObjectType):
-    pass
-
-schema = graphene.Schema(query=Query, mutation=Mutation, subscription=Subscription)
+schema = graphene.Schema(query=Query, mutation=Mutation)
