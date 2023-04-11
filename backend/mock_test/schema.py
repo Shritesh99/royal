@@ -29,7 +29,7 @@ class TestMutation(graphene.Mutation):
         choiceId = graphene.String()
         time_taken = graphene.Int()
 
-    # @login_required
+    @login_required
     def mutate(self, info, first, testId, questionId, choiceId, time_taken):
         if first:
             num_questions_per_difficulty = 2
@@ -49,9 +49,9 @@ class TestMutation(graphene.Mutation):
             mock_test = MockTest.objects.create()
             mock_test.questions.add(*selected_questions)
             mock_test.save()
-            # user = AppUser.objects.get(user = info.context.user)
-            # user.mock_tests.add(mock_test)
-            # user.save()
+            user = AppUser.objects.get(user = info.context.user)
+            user.mock_tests.add(mock_test)
+            user.save()
             return TestMutation(question=mock_test.questions.first(), test_id = mock_test.id)
         mock_test = MockTest.objects.get(id=testId)
             
