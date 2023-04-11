@@ -5,6 +5,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
 import joblib
 
+global data_df
+
 def preprocess_data():
     # Read the data from CSV files
     learning_style_df = pd.read_csv("learning_style.csv")
@@ -50,7 +52,8 @@ def load_model(filename):
     # Load the saved model
     return joblib.load(filename)
 
-def make_prediction(data_df, student_id):
+def make_prediction(student_id):
+    global data_df
     student_data = data_df.loc[data_df["ID"] == student_id].drop(["ID", "Difficulty"], axis=1).iloc[0].values.reshape(1, -1)
     loaded_clf = load_model("decision_tree_model.pkl")
     # Predict using the loaded model
@@ -58,6 +61,7 @@ def make_prediction(data_df, student_id):
     print(y_pred)
 
 def difficulty_train():
+    global data_df
     data_df = preprocess_data()
     clf = train_and_evaluate(data_df)
     save_model(clf, "decision_tree_model.pkl")
@@ -65,6 +69,6 @@ def difficulty_train():
 
     
 if __name__ == "__main__":
-    data_df = difficulty_train()
+    difficulty_train()
     student_id = 123
-    make_prediction(data_df, student_id)
+    make_prediction(student_id)
