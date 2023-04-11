@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "graphene_django",
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    "daphne",
     "taggit",
     'corsheaders',
     'social_django',
