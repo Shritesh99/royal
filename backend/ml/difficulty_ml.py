@@ -52,6 +52,8 @@ def load_model(filename):
     # Load the saved model
     return joblib.load(filename)
 
+#2nd api
+#external module can call this api to predict the dificulty level by given a student_id
 def make_prediction(student_id):
     global data_df
     student_data = data_df.loc[data_df["ID"] == student_id].drop(["ID", "Difficulty"], axis=1).iloc[0].values.reshape(1, -1)
@@ -60,6 +62,8 @@ def make_prediction(student_id):
     y_pred = loaded_clf.predict(student_data)
     print(y_pred)
 
+#1st api
+#external module can call this api to train the model
 def difficulty_train():
     global data_df
     data_df = preprocess_data()

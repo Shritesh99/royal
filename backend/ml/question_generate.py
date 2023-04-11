@@ -33,6 +33,9 @@ def generate_question_request(difficulty_level, topics, learning_style):
 
     return request
 
+# external module can call this api by given 2 parameters:
+# 1st parameter: student_id
+# 2nd parameter: dificulty level which can obtained from dificculty_ml api. 
 def generate_question(student_id, difficulty_level):
     # Read the data from CSV files
     learning_style_df = pd.read_csv("learning_style.csv")
