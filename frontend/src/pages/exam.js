@@ -1,29 +1,65 @@
 import { useState, useEffect } from "react";
-import { Formiz, FormizStep, useForm, useField } from "@formiz/core";
 import { useLazyQuery } from "@apollo/client";
 import { Loading } from "../components";
 import { Test } from "../gql";
 import { ErrorAtom, isLoggedInSelector, AuthAtom } from "../atoms";
 import { useRecoilValue, RecoilRoot, useRecoilState } from "recoil";
+import { useTimer } from "react-timer-hook";
 
-export const MyField = (props) => {
-	const { setValue, value } = useField(props);
-
+const Field = (props) => {
 	return (
-		<input
-			type="radio"
-			onChange={(e) => setValue(e.target.value)} // Update the value onChange
-		/>
+		<div className="block">
+			<input type="radio" />
+			<label className="radio">{props.c.text}</label>
+		</div>
+	);
+};
+const Step = ({ q, i, seconds, minutes, active }) => {
+	console.log(active);
+	return (
+		<div
+			className={`column is-four-fifths ${
+				active === i ? "" : "is-hidden"
+			}`}>
+			<p className="title">{q.text}</p>
+			<div className="block">
+				<div className="control">
+					{q.choices.map((c) => (
+						<Field
+							name={c.id}
+							key={c.id}
+							label={c.text}
+							c={c}
+						/>
+					))}
+				</div>
+			</div>
+		</div>
 	);
 };
 export default function Exam() {
 	const [loading, setLoading] = useState(true);
 	const isLoggedIn = useRecoilValue(isLoggedInSelector);
 	const [err, setErr] = useRecoilState(ErrorAtom);
-	const myForm = useForm();
 	const [testID, setTestId] = useState("");
 	const [questions, setQuestions] = useState([]);
 
+	const [active, setActive] = useState(0);
+
+	const {
+		seconds,
+		minutes,
+		hours,
+		days,
+		isRunning,
+		start,
+		pause,
+		resume,
+		restart,
+	} = useTimer({
+		expiryTimestamp: new Date().setSeconds(new Date().getMinutes() + 30),
+		onExpire: () => console.warn("onExpire called"),
+	});
 	useEffect(() => {
 		if (!isLoggedIn) {
 			setAuth(null);
@@ -41,6 +77,7 @@ export default function Exam() {
 			setTestId(data.test.testId);
 			setQuestions(data.test.questions);
 			setLoading(false);
+			setActive(data.test.questions[0].id);
 		},
 		onError: (error) => {
 			setErr(error);
@@ -48,83 +85,52 @@ export default function Exam() {
 		},
 	});
 
-	const submitForm = (values) => {
-		console.log(values);
-	};
 	if (loading) return <Loading />;
 	return (
-		<Formiz onValidSubmit={submitForm} connect={myForm}>
-			<form
-				noValidate
-				onSubmit={myForm.submitStep}
-				className="box container is-fullhd is-widescreen is-flex is-flex-direction-column is-align-self-stretch is-justify-content-space-between">
-				{questions ? (
-					questions.map((q, i) => (
-						<FormizStep name={`step${i + 1}`} key={q.id}>
-							<div className="card-content field">
-								<p className="title">{q.text}</p>
-								<div className="block">
-									<div className="control">
-										<fieldset>
-											{q.choices.map((c) => (
-												<label
-													className="radio"
-													key={c.id}>
-													<MyField
-														name="firstName"
-														label={
-															c.text
-														}
-														required="First Name is required"
-													/>
-													{c.text}
-												</label>
-											))}
-										</fieldset>
-									</div>
-								</div>
-							</div>
-						</FormizStep>
-					))
-				) : (
-					<></>
-				)}
-				<footer class="card-footer">
-					<div className="card-footer-item">
-						{!myForm.isFirstStep && (
-							<button
-								className="button is-full is-fullwidth is-warning"
-								type="button"
-								onClick={myForm.prevStep}>
-								Previous
-							</button>
-						)}
+		<form
+			className="box container is-fullhd is-widescreen is-flex is-flex-direction-column is-align-self-stretch is-justify-content-space-between"
+			onSubmit={(e) => {
+				e.preventDefault();
+			}}>
+			<div className="card-content">
+				<div className="columns">
+					{questions ? (
+						questions.map((q, i) => (
+							<Step
+								q={q}
+								i={i}
+								key={q.id}
+								seconds={seconds}
+								minutes={minutes}
+							/>
+						))
+					) : (
+						<></>
+					)}
+					<div className="column is-flex is-justify-content-center">
+						<div style={{ fontSize: "50px" }}>
+							<span>{minutes}</span>:<span>{seconds}</span>
+						</div>
 					</div>
-					<div className="card-footer-item">
-						Question{" "}
-						{(myForm.currentStep &&
-							myForm.currentStep.index + 1) ||
-							0}{" "}
-						of {myForm.steps.length}
-					</div>
-					<div className="card-footer-item">
-						<button
-							className="button is-full is-primary is-fullwidth"
-							type="submit"
-							onClick={(e) => {
-								myForm.isLastStep
-									? myForm.submit(e)
-									: myForm.nextStep();
-							}}>
-							{`${
-								myForm.isLastStep
-									? "Submit"
-									: "Next Question"
-							}`}
-						</button>
-					</div>
-				</footer>
-			</form>
-		</Formiz>
+				</div>
+			</div>
+			<footer class="card-footer">
+				<div className="card-footer-item">
+					<button
+						className="button is-full is-fullwidth is-warning"
+						type="button">
+						Previous
+					</button>
+				</div>
+				<div className="card-footer-item">Question </div>
+				<div className="card-footer-item">
+					<button
+						className="button is-full is-primary is-fullwidth"
+						type="submit">
+						Next
+					</button>
+				</div>
+			</footer>
+		</form>
 	);
 }
