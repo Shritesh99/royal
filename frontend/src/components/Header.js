@@ -2,12 +2,14 @@ import Link from "next/link";
 import { googleLogout } from "@react-oauth/google";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
-import { AuthAtom, isLoggedInSelector } from "../atoms";
+import { AuthAtom, isLoggedInSelector, FSLSMQuestionModalAtom } from "../atoms";
 
 export const Header = () => {
 	const router = useRouter();
 	const [auth, setAuth] = useRecoilState(AuthAtom);
 	const isLoggedIn = useRecoilValue(isLoggedInSelector);
+	const [getFSLSMQuestionModalActive, setFSLSMQuestionModalActive] =
+		useRecoilState(FSLSMQuestionModalAtom);
 	const signOut = () => {
 		googleLogout();
 		setAuth(null);
@@ -39,9 +41,18 @@ export const Header = () => {
 									)}
 								</figure>
 								<div className="navbar-dropdown is-right">
-									<a className="navbar-item">
+									<a className="navbar-item button is-white">
 										Profile
 									</a>
+									<button
+										className="navbar-item button is-white"
+										onClick={() =>
+											setFSLSMQuestionModalActive(
+												true
+											)
+										}>
+										Set Learning style
+									</button>
 									<hr className="navbar-divider" />
 									<a
 										className="navbar-item button is-inverted is-danger"

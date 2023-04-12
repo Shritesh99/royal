@@ -3,6 +3,7 @@ import AddDobGender from "./addDobGender";
 import Me from "./me";
 import FSLSMQuestions from "./fslsmQuestions";
 import AddFSLSMquestionsResponse from "./addFslsmquestionsResponse";
+import Test from "./test";
 
 export {
 	SocialUserGQL,
@@ -10,4 +11,5 @@ export {
 	Me,
 	FSLSMQuestions,
 	AddFSLSMquestionsResponse,
+	Test,
 };

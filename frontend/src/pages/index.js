@@ -1,6 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
-import { useLazyQuery } from "@apollo/client";
 import {
 	LoadingAtom,
 	isLoggedInSelector,
@@ -35,21 +34,23 @@ export default function Home({ props }) {
 		}
 	}, [isLoggedIn]);
 
-	const startTest = () => {};
+	const startTest = () => {
+		router.push("/exam");
+	};
 	return (
-		<div className="container">
-			<div className="columns is-align-items-center">
-				<div className="column is-one-third ">
-					<div className="title is-1">Take test today!</div>
-					<button className="button" onClick={() => startTest()}>
-						<span>Start Test</span>
-					</button>
-				</div>
-				<div className="column is-two-thirds">
-					<figure className="image">
-						<Image src={img} alt="img" width={500} />
-					</figure>
-				</div>
+		<div className="columns is-align-items-center container is-fullhd is-widescreen mx-3">
+			<div className="column is-two-fifths">
+				<div className="title is-1">Take test today!</div>
+				<button
+					className="button is-info"
+					onClick={() => startTest()}>
+					<span>Start Test</span>
+				</button>
+			</div>
+			<div className="column is-three-fifths">
+				<figure className="image">
+					<Image src={img} alt="img" width={500} />
+				</figure>
 			</div>
 		</div>
 	);

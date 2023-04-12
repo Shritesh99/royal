@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.10",
+    "@formiz/core": "^1.8.1",
+    "@formiz/validations": "^1.0.0",
     "@react-oauth/google": "^0.9.0",
+    "bulma-extensions": "^6.2.7",
     "csrf-token": "^1.1.0",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",

@@ -95,22 +95,34 @@ export const FSLSMQuestionModal = () => {
 												});
 												setAnswered(temp);
 											}}>
-											<label className="radio">
-												<input
-													type="radio"
-													name={`question-${e.order}`}
-													value={`${e.order},${e.choices[0].id}`}
-												/>
-												{e.choices[0].text}
-											</label>
-											<label className="radio">
-												<input
-													type="radio"
-													name={`question-${e.order}`}
-													value={`${e.order},${e.choices[1].id}`}
-												/>
-												{e.choices[1].text}
-											</label>
+											<div className="block">
+												<label className="radio">
+													<input
+														type="radio"
+														name={`question-${e.order}`}
+														value={`${e.order},${e.choices[0].id}`}
+													/>
+													{
+														e
+															.choices[0]
+															.text
+													}
+												</label>
+											</div>
+											<div className="block">
+												<label className="radio">
+													<input
+														type="radio"
+														name={`question-${e.order}`}
+														value={`${e.order},${e.choices[1].id}`}
+													/>
+													{
+														e
+															.choices[1]
+															.text
+													}
+												</label>
+											</div>
 										</div>
 									</div>
 								))
