@@ -49,7 +49,7 @@ export default function Auth() {
 	});
 
 	return (
-		<div className="container mx-3">
+		<div className="container">
 			<div className="columns is-align-items-center">
 				<div className="column is-one-third ">
 					<div className="title is-1">Let's get Started</div>

@@ -38,19 +38,21 @@ export default function Home({ props }) {
 		router.push("/exam");
 	};
 	return (
-		<div className="columns is-align-items-center container is-fullhd is-widescreen mx-3">
-			<div className="column is-two-fifths">
-				<div className="title is-1">Take test today!</div>
-				<button
-					className="button is-info"
-					onClick={() => startTest()}>
-					<span>Start Test</span>
-				</button>
-			</div>
-			<div className="column is-three-fifths">
-				<figure className="image">
-					<Image src={img} alt="img" width={500} />
-				</figure>
+		<div className="container">
+			<div className="container columns is-align-items-center container is-fullhd is-widescreen">
+				<div className="column is-two-fifths">
+					<div className="title is-1">Take test today!</div>
+					<button
+						className="button is-info"
+						onClick={() => startTest()}>
+						<span>Start Test</span>
+					</button>
+				</div>
+				<div className="column is-three-fifths">
+					<figure className="image">
+						<Image src={img} alt="img" width={500} />
+					</figure>
+				</div>
 			</div>
 		</div>
 	);
