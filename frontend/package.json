@@ -13,7 +13,6 @@
     "@formiz/core": "^1.8.1",
     "@formiz/validations": "^1.0.0",
     "@react-oauth/google": "^0.9.0",
-    "bulma-extensions": "^6.2.7",
     "csrf-token": "^1.1.0",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",
@@ -23,6 +22,7 @@
     "react-day-picker": "^8.6.0",
     "react-dom": "18.2.0",
     "react-loader-spinner": "^5.3.4",
+    "react-timer-hook": "^3.0.5",
     "react-toastify": "^9.1.2",
     "recoil": "^0.7.7"
   }

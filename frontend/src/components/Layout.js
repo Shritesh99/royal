@@ -3,7 +3,7 @@ import { Footer } from "./Footer";
 
 export const Layout = ({ children }) => {
 	return (
-		<section className="hero is-fullheight has-background-white-ter">
+		<section className="hero is-fullheight has-background-white-bis">
 			<Header />
 			{children}
 			<Footer />

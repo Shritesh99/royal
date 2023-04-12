@@ -6,6 +6,16 @@ import { Test } from "../gql";
 import { ErrorAtom, isLoggedInSelector, AuthAtom } from "../atoms";
 import { useRecoilValue, RecoilRoot, useRecoilState } from "recoil";
 
+export const MyField = (props) => {
+	const { setValue, value } = useField(props);
+
+	return (
+		<input
+			type="radio"
+			onChange={(e) => setValue(e.target.value)} // Update the value onChange
+		/>
+	);
+};
 export default function Exam() {
 	const [loading, setLoading] = useState(true);
 	const isLoggedIn = useRecoilValue(isLoggedInSelector);
@@ -52,17 +62,25 @@ export default function Exam() {
 					questions.map((q, i) => (
 						<FormizStep name={`step${i + 1}`} key={q.id}>
 							<div className="card-content field">
-								<p class="title">{q.text}</p>
+								<p className="title">{q.text}</p>
 								<div className="block">
 									<div className="control">
-										{q.choices.map((c) => (
-											<label
-												className="radio"
-												key={c.id}>
-												<input type="radio" />
-												{c.text}
-											</label>
-										))}
+										<fieldset>
+											{q.choices.map((c) => (
+												<label
+													className="radio"
+													key={c.id}>
+													<MyField
+														name="firstName"
+														label={
+															c.text
+														}
+														required="First Name is required"
+													/>
+													{c.text}
+												</label>
+											))}
+										</fieldset>
 									</div>
 								</div>
 							</div>
@@ -90,23 +108,20 @@ export default function Exam() {
 						of {myForm.steps.length}
 					</div>
 					<div className="card-footer-item">
-						{myForm.isLastStep ? (
-							<button
-								className="button is-full is-primary is-fullwidth"
-								type="submit">
-								Next
-							</button>
-						) : (
-							<button
-								className="button is-full is-primary is-fullwidth"
-								type="submit">
-								{`${
-									!myForm.isLastStep
-										? "Next Question"
-										: "Submit Test"
-								}`}
-							</button>
-						)}
+						<button
+							className="button is-full is-primary is-fullwidth"
+							type="submit"
+							onClick={(e) => {
+								myForm.isLastStep
+									? myForm.submit(e)
+									: myForm.nextStep();
+							}}>
+							{`${
+								myForm.isLastStep
+									? "Submit"
+									: "Next Question"
+							}`}
+						</button>
 					</div>
 				</footer>
 			</form>

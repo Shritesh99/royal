@@ -1,7 +1,5 @@
 import "@/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import "bulma-extensions/dist/css/bulma-extensions.min.css";
-import "bulma-extensions/dist/js/bulma-extensions.min.js";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useEffect, useState } from "react";
