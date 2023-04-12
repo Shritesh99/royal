@@ -1,5 +1,5 @@
 ID,Properties of integers,"Fractions, decimals, and percents","Ratio, proportion, and variation",Exponents and roots,Descriptive statistics,Operations with algebraic expressions,Equations and inequalities,Functions and graphs,Quadratic equations and functions,Sequences and series,Lines and angles,Triangles and polygons,Circles,Three-dimensional geometry,Geometric transformations,Probability,Counting methods and combinatorics,Data interpretation
-1,2,4,4,1,4,1,3,0,4,2,8,1,3,4,7,6,1,0
+1,3,5,4,4,3,3,4,4,4,0,4,4,9,6,4,6,4,6
 2,4,5,9,4,10,10,4,7,0,10,7,2,0,6,5,10,7,7
 3,8,10,4,10,0,1,9,3,8,2,5,4,2,10,0,4,6,10
 4,6,3,10,9,8,6,4,7,1,6,4,3,3,10,8,1,2,4
@@ -999,3 +999,4 @@ ID,Properties of integers,"Fractions, decimals, and percents","Ratio, proportion
 998,2,10,10,2,6,5,2,4,0,3,6,1,1,6,7,6,8,8
 999,2,9,5,6,5,0,10,1,9,1,0,5,4,7,8,9,3,5
 1000,3,3,5,10,6,5,10,4,10,3,4,0,6,2,1,4,4,3
+1001,3,5,4,4,3,3,4,4,4,0,4,4,9,6,4,6,4,6
