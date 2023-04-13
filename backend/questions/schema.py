@@ -34,7 +34,7 @@ class FSLSMQuestionsMutation(graphene.Mutation):
         for item in response:
             res[item.question] = "A" if FSLSMQuestion.objects.get(
                 order=item.question).choices.first().id == item.answer else "B"
-        user.ls = determine_learning_style(user.id, res)
+        user.ls = determine_learning_style(user.user.id, res)
         user.save()
         return FSLSMQuestionsMutation(success=True)
 
