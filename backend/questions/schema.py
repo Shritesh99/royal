@@ -6,25 +6,31 @@ from users.models import AppUser
 from ml.MLE_LearningModel import determine_learning_style
 from ml.motivitation import calculate_score
 
+
 class ChoiceType(DjangoObjectType):
     class Meta:
         model = FSLSMChoice
+
 
 class FSLSMQuestionType(DjangoObjectType):
     class Meta:
         model = FSLSMQuestion
 
+
 class FSLSMQuestionInput(graphene.InputObjectType):
     question = graphene.String()
     answer = graphene.String()
 
+
 class MotivationQuestionType(DjangoObjectType):
     class Meta:
-        model = MotivationQuestion    
+        model = MotivationQuestion
+
 
 class MotivationQuestionInput(graphene.InputObjectType):
     question = graphene.String()
     answer = graphene.Int()
+
 
 class FSLSMQuestionsMutation(graphene.Mutation):
     success = graphene.Boolean()
@@ -43,11 +49,12 @@ class FSLSMQuestionsMutation(graphene.Mutation):
         user.save()
         return FSLSMQuestionsMutation(success=True)
 
+
 class MotivationQuestionsMutation(graphene.Mutation):
     success = graphene.Boolean()
 
     class Arguments:
-        response = graphene.List(MotivationQuestionInput())
+        response = graphene.List(MotivationQuestionInput)
 
     @login_required
     def mutate(self, info, response):
@@ -58,6 +65,7 @@ class MotivationQuestionsMutation(graphene.Mutation):
         user.mv_score = calculate_score(user.user.id, res)
         user.save()
         return MotivationQuestionsMutation(success=True)
+
 
 class Mutation(graphene.ObjectType):
     add_FSLSMQuestions_response = FSLSMQuestionsMutation.Field()

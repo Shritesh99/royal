@@ -33,9 +33,9 @@ def generate_question_request(difficulty_level, topics, learning_style):
 # 2nd parameter: dificulty level which can obtained from dificculty_ml api. 
 def generate_question(student_id, difficulty_level):
     # Read the data from CSV files
-    learning_style_df = pd.read_csv("../static/learning_style.csv")
-    skill_level_df = pd.read_csv("../static/skill_level.csv")
-    motivation_level_df = pd.read_csv("../static/motivation_level.csv")
+    learning_style_df = pd.read_csv("static/learning_style.csv")
+    skill_level_df = pd.read_csv("static/skill_level.csv")
+    motivation_level_df = pd.read_csv("static/motivation_level.csv")
 
     # Merge the DataFrames
     data_df = learning_style_df.merge(skill_level_df, on="ID").merge(motivation_level_df, on="ID")

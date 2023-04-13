@@ -1,9 +1,9 @@
 import openai
 import re
 import environ
-from question_generate import generate_question
-from difficulty_ml import difficulty_train
-from difficulty_ml import make_prediction
+from ml.question_generate import generate_question
+from ml.difficulty_ml import difficulty_train
+from ml.difficulty_ml import make_prediction
 env = environ.Env()
 
 # Set the API key
