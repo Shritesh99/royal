@@ -71,9 +71,8 @@ class FSLSMQuestion(models.Model):
         return str(self.text)
 
 class MotivationQuestion(models.Model):
-    order = models.IntegerField(unique=True, null=False)
+    order = models.IntegerField(unique=True)
     text = models.TextField(blank=False)
-    choices = models.ManyToManyField(FSLSMChoice, blank=True)
 
     class Meta:
         ordering = ['order']
@@ -82,6 +81,10 @@ class MotivationQuestion(models.Model):
 
     def __str__(self):
         return str(self.text)
+
+class MotivationInteraction(models.Model):
+    question = models.ForeignKey(MotivationQuestion, on_delete=models.SET_NULL, null=True)
+    answer = models.IntegerField(default=0)
 
 # class Goal(models.Model):
 #     topic_name = models.CharField(max_length=255)
