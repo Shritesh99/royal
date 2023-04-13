@@ -69,6 +69,7 @@ class MotivationQuestionsMutation(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     add_FSLSMQuestions_response = FSLSMQuestionsMutation.Field()
+    add_MotivationQuestions_response = MotivationQuestionsMutation().Field()
 
 
 class Query(graphene.ObjectType):
