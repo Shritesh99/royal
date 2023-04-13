@@ -4,6 +4,7 @@ import Me from "./me";
 import FSLSMQuestions from "./fslsmQuestions";
 import AddFSLSMquestionsResponse from "./addFslsmquestionsResponse";
 import Test from "./test";
+import SubmitTest from "./submitTest";
 
 export {
 	SocialUserGQL,
@@ -12,4 +13,5 @@ export {
 	FSLSMQuestions,
 	AddFSLSMquestionsResponse,
 	Test,
+	SubmitTest,
 };
