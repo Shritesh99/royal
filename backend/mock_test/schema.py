@@ -7,8 +7,11 @@ from users.models import AppUser
 from questions.models import GREQuestion
 from mock_test.models import MockTest
 from django.db.models import Count
-from ml.gpt import get_chatgpt_question
+from ml.gpt import get_question
 from ml.extract_skill_level import extra_skill_level
+
+difficulty_labels = {"Easy": 1, "Medium": 3, "Hard": 5}
+
 
 class GREChoices(DjangoObjectType):
     class Meta:
@@ -44,21 +47,23 @@ class SubmmitTestMutation(graphene.Mutation):
     @login_required
     def mutate(self, info, testId, response):
         mock_test = MockTest.objects.get(id=testId)
-        gre_answers=[]
+        gre_answers = []
+        total_time = 0
         for item in response:
             question = GREQuestion.objects.get(id=item.questionId)
             correct = question.choices.get(id=item.choiceId).is_correct
             interaction = QuestionInteraction.objects.create(
                 question=question, correct=correct, time_taken=item.time_taken)
             mock_test.interactions.add(interaction)
-            mock_test.save()
+            total_time += item.time_taken
             gre_answers.append({
                 'Topic': question.topic.no,
                 'time': time_taken,
                 'difficulty': question.difficulty,
                 'correct': 1 if correct else 0
             })
-        
+        mock_test.time_taken = total_time
+        mock_test.save()
         user = AppUser.objects.get(user=info.context.user)
         user.is_first_test = False
         user.save()
@@ -162,21 +167,24 @@ class Query(graphene.ObjectType):
             'difficulty', flat=True).distinct()
         questions = []
 
-        for level in difficulty_levels:
-            qs = GREQuestion.objects.filter(difficulty=level).annotate(
-                num_choices=Count('choices'))
-            question_ids = [q.id for q in qs if q.num_choices > 0]
-            if len(question_ids) >= num_questions_per_difficulty:
-                questions.extend(random.sample(
-                    question_ids, num_questions_per_difficulty))
-            else:
-                questions.extend(question_ids)
-
-        selected_questions = list(
-            GREQuestion.objects.filter(id__in=questions))
-        random.shuffle(selected_questions)
+        for i in range(10):
+            get_difficulty, question, options, answer_index, explanation, ontology_tags = get_question(
+                user.user.id)
+            grequestion = GREQuestion()
+            grequestion.text = question
+            grequestion.difficulty = difficulty_labels[get_difficulty]
+            grequestion.topic = ontology_tags
+            for i in range(len(options)):
+                choice = Choice()
+                choice.text = options[i]
+                choice.is_correct = i == answer_index
+                choice.save()
+                grequestion.choices.add(choice)
+            grequestion.save()
+            questions.append(grequestion)
+        random.shuffle(questions)
         mock_test = MockTest.objects.create()
-        mock_test.questions.add(*selected_questions)
+        mock_test.questions.add(*question)
         mock_test.save()
         user = AppUser.objects.get(user=info.context.user)
         user.mock_tests.add(mock_test)
