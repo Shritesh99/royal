@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+import csv
 
 # Define function to calculate score based on topic, time, difficulty, and correct
 def calculate_score(topic, time, difficulty, correct):
@@ -20,61 +21,167 @@ def calculate_score(topic, time, difficulty, correct):
              time_weight / time -
              diff_weight * difficulty +
              correct_weight * (1 if correct else 0))
+
     return score
 
+# example
+gre_answers = {
+    1: {
+        'Topic': 1,
+        'time': 360,
+        'difficulty': 3,
+        'correct': 1
+    },
+    2: {
+        'Topic': 2,
+        'time': 180,
+        'difficulty': 2,
+        'correct': 0
+    },
+    3: {
+        'Topic': 4,
+        'time': 230,
+        'difficulty': 2,
+        'correct': 0
+    },
+    4: {
+        'Topic': 18,
+        'time': 180,
+        'difficulty': 2,
+        'correct': 0
+    },
+    5: {
+        'Topic': 10,
+        'time': 300,
+        'difficulty': 3,
+        'correct': 0
+    },
+    6: {
+        'Topic': 6,
+        'time': 360,
+        'difficulty': 3,
+        'correct': 1
+    },
+    7: {
+        'Topic': 14,
+        'time': 180,
+        'difficulty': 2,
+        'correct': 0
+    },
+    8: {
+        'Topic': 16,
+        'time': 180,
+        'difficulty': 2,
+        'correct': 0
+    },
+    9: {
+        'Topic': 13,
+        'time': 180,
+        'difficulty': 1,
+        'correct': 0
+    },
+    10: {
+        'Topic':5,
+        'time': 660,
+        'difficulty': 3,
+        'correct': 1
+    },
 
-# Read csv file containing answers to GRE math questions
-df = pd.read_csv('gre_answers.csv')
 
-# Clean and preprocess data
-# ...
+}
 
-# Get a list of all topics
-topics = df['Topic'].unique()
+def whetherFindCertainId(user_id, append_row):
+    # Open the CSV file and read the contents
+    with open('static/skill_level.csv', mode='r') as file:
+        reader = csv.reader(file)
 
-# Calculate score for each user on each topic
-scores = []
-for index, row in df.iterrows():
-    user_id = row['User_id']
-    topic = row['Topic']
-    time = row['Time']
-    difficulty = row['Diffculty']
-    correct = row['Correct']
+        # Create an empty list to store all rows of data
+        all_rows = []
 
-    score = calculate_score(topic, time, difficulty, correct)
-    scores.append((user_id, topic, score))
+        # Iterate through each row and look for a specific ID
+        found_id = False
+        for row in reader:
+            if row[0] == 'ID':
+                continue
+            if int(row[0]) == user_id:
+                found_id = True
+                row = append_row
+            # Add each row to the all_rows list
+            all_rows.append(row)
+    file.close()
 
-# Group scores by user_id and topic, and calculate average score for each user on each topic
-scores_df = pd.DataFrame(scores, columns=['User_id', 'Topic', 'Score'])
-scores_mean = scores_df.groupby(['User_id', 'Topic']).mean().reset_index()
+    if found_id:
+        # Now open the file to write the new data
+        with open('static/skill_level.csv', mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['ID',  'Properties of integers',
+                             'Fractions, decimals, and percents',
+                             'Ratio, proportion, and variation',
+                             'Exponents and roots',
+                             'Descriptive statistics',
+                             'Operations with algebraic expressions',
+                             'Equations and inequalities',
+                             'Functions and graphs',
+                             'Quadratic equations and functions',
+                             'Sequences and series',
+                             'Lines and angles',
+                             'Triangles and polygons',
+                             'Circles',
+                             'Three-dimensional geometry',
+                             'Geometric transformations',
+                             'Probability',
+                             'Counting methods and combinatorics',
+                             'Data interpretation'])
+            for row in all_rows:
+                writer.writerow(row)
 
-# Calculate skill level for each user on each topic
-skill_levels = []
-for user_id, group in scores_mean.groupby('User_id'):
-    row = {'User_id': user_id}
-    for topic in topics:
-        if topic in group['Topic'].values:
-            score = group[group['Topic'] == topic]['Score'].iloc[0]
-        else:
-            score = np.mean(group['Score'])
-        skill_level = (score - np.mean(group['Score'])) / np.std(group['Score'])
-        row['Topic{}'.format(topic)] = skill_level
-    skill_levels.append(row)
+    # close csv
+    file.close()
+    return found_id
 
-# Convert skill levels for each user on each topic to a new dataframe
-new_df = pd.DataFrame(skill_levels, columns=['User_id'] + ['Topic{}'.format(topic) for topic in topics])
+def extra_skill_level(user_id, gre_answers):
+    # new extra skill level row
+    row = [user_id, 0, 0 ,0, 0, 0 ,0, 0, 0 ,0, 0, 0 ,0, 0, 0 ,0, 0, 0 ,0]
+    # count & total_scroe for calculate the average score
+    count = 0
+    total_score = 0
 
-# Sort topics in ascending order
-topics = ['Topic{}'.format(i) for i in range(1, 18)]
-new_df = new_df[['User_id'] + topics]
+    # Iterate over all key values in the dictionary
+    for key in gre_answers:
+        # from key get value
+        value = gre_answers[key]
+        # get info from value
+        topic = value['Topic']
+        time = value['time']
+        difficulty = value['difficulty']
+        correct = value['correct']
+        # calculate score
+        score = calculate_score(topic, time, difficulty, correct)
+        count += 1
+        # save the score into row
+        row[topic] = score
+        total_score += score
 
-# Fill all 0 values with mean value of the row (excluding User_id)
-for topic in topics:
-    new_df[topic] = new_df[topic].apply(lambda x: np.mean(new_df.loc[new_df[topic] != 0, topic]) if x == 0 else x)
+    mean_score = total_score / count
+    for i in range(1, len(row)):
+        if row[i] == 0:
+            row[i] = mean_score
 
-# Normalize scores for each row to 0-10
-scaler = MinMaxScaler(feature_range=(0, 10))
-new_df[topics] = scaler.fit_transform(new_df[topics])
+    # transfer the list ot an array
+    row = np.array(row)
+    # Normalize scores for each row to 0-10
+    scaler = MinMaxScaler(feature_range=(0, 10))
+    row[1:] = scaler.fit_transform(row[1:].reshape(-1, 1)).flatten()
+    new_row = []
+    for r in row:
+        new_row.append(int(r))
+    print(new_row)
+    if not whetherFindCertainId(user_id, new_row):
+        with open('static/skill_level.csv', mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(new_row)
 
-# Save new dataframe as a csv file
-new_df.to_csv('topic_skill_level.csv', index=False)
+        file.close()
+
+extra_skill_level(1, gre_answers)
+
