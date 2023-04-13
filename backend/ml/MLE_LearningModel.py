@@ -7,27 +7,15 @@ import csv
 def getDimensions():
     dimensions = {
         "Sensing-Intuition": ["1"],
-        "Visual-Verbal": ["2", "3", "10"],
+        "Visual-Verbal": ["2", "3","5", "10"],
         "Active-Reflective": ["6", "8", "9"],
         "Sequential-Global": ["4", "7"],
-        "Sensitive-Resilient": ["5"]
     }
     return dimensions
 
 
 # Define the answers for each question
 answers = {
-    # "1": "B",
-    # "2": "B",
-    # "3": "A",
-    # "4": "A",
-    # "5": "A",
-    # "6": "B",
-    # "7": "B",
-    # "8": "A",
-    # "9": "A",
-    # "10": "B"
-
     "1": "B",
     "2": "A",
     "3": "A",
@@ -99,7 +87,7 @@ def determine_learning_style(user_id, answers):
     # Define the responses
     responses = {
         "A": 1,
-        "B": 0
+        "B": -1
     }
 
     # Initialize the data matrix with zeros
