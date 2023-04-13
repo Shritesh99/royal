@@ -9,9 +9,9 @@ global data_df
 
 def preprocess_data():
     # Read the data from CSV files
-    learning_style_df = pd.read_csv("static/learning_style.csv")
-    skill_level_df = pd.read_csv("static/skill_level.csv")
-    motivation_level_df = pd.read_csv("static/motivation_level.csv")
+    learning_style_df = pd.read_csv("../static/learning_style.csv")
+    skill_level_df = pd.read_csv("../static/skill_level.csv")
+    motivation_level_df = pd.read_csv("../static/motivation_level.csv")
 
     # Merge the DataFrames
     data_df = learning_style_df.merge(skill_level_df, on="ID").merge(motivation_level_df, on="ID")
@@ -57,7 +57,7 @@ def load_model(filename):
 def make_prediction(student_id):
     global data_df
     student_data = data_df.loc[data_df["ID"] == student_id].drop(["ID", "Difficulty"], axis=1).iloc[0].values.reshape(1, -1)
-    loaded_clf = load_model("static/decision_tree_model.pkl")
+    loaded_clf = load_model("../static/decision_tree_model.pkl")
     # Predict using the loaded model
     y_pred = loaded_clf.predict(student_data)
     print(y_pred)
@@ -68,7 +68,7 @@ def difficulty_train():
     global data_df
     data_df = preprocess_data()
     clf = train_and_evaluate(data_df)
-    save_model(clf, "static/decision_tree_model.pkl")
+    save_model(clf, "../static/decision_tree_model.pkl")
     return data_df
 
     
