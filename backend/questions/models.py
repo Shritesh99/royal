@@ -82,9 +82,6 @@ class MotivationQuestion(models.Model):
     def __str__(self):
         return str(self.text)
 
-class MotivationInteraction(models.Model):
-    question = models.ForeignKey(MotivationQuestion, on_delete=models.SET_NULL, null=True)
-    answer = models.IntegerField(default=0)
 
 # class Goal(models.Model):
 #     topic_name = models.CharField(max_length=255)

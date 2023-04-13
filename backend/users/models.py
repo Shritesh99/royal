@@ -3,7 +3,6 @@ from djongo import models
 from django.contrib.auth import get_user_model
 
 from mock_test.models import *
-from questions.models import MotivationInteraction
 # Create your models here.
 
 
@@ -35,7 +34,7 @@ class AppUser(models.Model):
     user_performance = models.ForeignKey(
         UserPerformance, on_delete=models.SET_NULL, null=True)
     mock_tests = models.ManyToManyField(MockTest, blank=True)
-    motivation = models.ManyToManyField(MotivationInteraction, blank=True)
+    motivation = models.IntegerField(null=True, default=0)
 
     class Meta:
         verbose_name = 'Social Auth'

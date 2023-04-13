@@ -65,6 +65,6 @@ def calculate_score(user_id, row):
             writer.writerow([user_id, score])
 
         file.close()
+    return score
 
-
-calculate_score(1001, row)
+# calculate_score(1001, row)
