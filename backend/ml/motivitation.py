@@ -36,20 +36,28 @@ def whetherFindCertainId(user_id, score):
     file.close()
     return found_id
 
+# Six Questions:
+# Question1:  Has user taken GRE before? 1 - yes 0 - no
+# Question2:  What has the user scored?
+# Question3:  What score do you want to achieve next?
+# Question4:  When are planning to take GRE?
+# Question5:  How long was it taken?
+# Question6:  How many times has he taken it overall?
+
 #example
-row =  {'Q1': 1, 'Q2': 155, 'Q3': 139, 'Q4': 1, 'Q5': 3, 'Q6':9}
+row =  {'Q1': 1, 'Q2': 139, 'Q3': 155, 'Q4': 1, 'Q5': 3, 'Q6':9}
 
 
 # Define a function that calculates the score based on the question scores and types
 def calculate_score(user_id, row):
     # Use Q1 value to determine the question type
-    if row['Q1'] == 1:
+    if row['Q1'] == 0:
         # The higher the Q3 score, the highest the score
         score = row['Q3'] / 170
     else:
-        # The lower the Q2, Q5, Q6 scores, and the higher the Q3, Q4 scores, the higher the score
-        max_q3_q4 = max(row['Q3'], row['Q4'])
-        score = (max_q3_q4 - row['Q2'] - row['Q5'] - row['Q6']) / (max_q3_q4 * 3)
+        # The lower the Q4, Q5, Q6 scores, and the higher the Q3, Q4 scores, the higher the score
+        max_q3_q2 = max(row['Q3'], row['Q2'])
+        score = (max_q3_q2 - row['Q4'] - row['Q5'] - row['Q6']) / max_q3_q2
     print(score)
     if not whetherFindCertainId(user_id, score):
         with open('static/motivation_level.csv', mode='a', newline='') as file:

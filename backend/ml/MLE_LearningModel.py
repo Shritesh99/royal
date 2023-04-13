@@ -2,6 +2,8 @@ import numpy as np
 import csv
 
 # Define the dimensions and their associated questions
+
+
 def getDimensions():
     dimensions = {
         "Sensing-Intuition": ["1"],
@@ -40,6 +42,8 @@ answers = {
 }
 
 # Define the MLE function
+
+
 def mle(data):
     input = []
     # for d in data:
@@ -47,6 +51,7 @@ def mle(data):
     # Calculate the MLE estimate for each dimension
     estimates = np.apply_along_axis(lambda x: np.mean(x), 1, data)
     return estimates
+
 
 def whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
     # Open the CSV file and read the contents
@@ -83,6 +88,8 @@ def whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
     return found_id
 
 # Calculate the MLE estimates for each dimension
+
+
 def determine_learning_style(user_id, answers):
     dimensions = getDimensions()
 
@@ -139,8 +146,6 @@ def determine_learning_style(user_id, answers):
         'AR': styleAR,
         'SG': styleSG
     }
-    print(learning_style)
-
 
     if not whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
         with open('static/learning_style.csv', mode='a', newline='') as file:
@@ -151,6 +156,7 @@ def determine_learning_style(user_id, answers):
             writer.writerow(data)
 
         file.close()
+    return "%s-%s-%s-%s".format(styleSI, styleVV, styleAR, styleSG)
 
 
 determine_learning_style(1001, answers)
