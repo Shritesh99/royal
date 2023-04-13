@@ -92,7 +92,7 @@ gre_answers = {
 
 def whetherFindCertainId(user_id, append_row):
     # Open the CSV file and read the contents
-    with open('skill_level.csv', mode='r') as file:
+    with open('static/skill_level.csv', mode='r') as file:
         reader = csv.reader(file)
 
         # Create an empty list to store all rows of data
@@ -112,7 +112,7 @@ def whetherFindCertainId(user_id, append_row):
 
     if found_id:
         # Now open the file to write the new data
-        with open('skill_level.csv', mode='w', newline='') as file:
+        with open('static/skill_level.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(['ID',  'Properties of integers',
                              'Fractions, decimals, and percents',
@@ -177,7 +177,7 @@ def extra_skill_level(user_id, gre_answers):
         new_row.append(int(r))
     print(new_row)
     if not whetherFindCertainId(user_id, new_row):
-        with open('skill_level.csv', mode='a', newline='') as file:
+        with open('static/skill_level.csv', mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(new_row)
 

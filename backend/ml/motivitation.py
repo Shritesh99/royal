@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 def whetherFindCertainId(user_id, score):
     # Open the CSV file and read the contents
-    with open('motivation_level.csv', mode='r') as file:
+    with open('static/motivation_level.csv', mode='r') as file:
         reader = csv.reader(file)
 
         # Create an empty list to store all rows of data
@@ -26,7 +26,7 @@ def whetherFindCertainId(user_id, score):
             all_rows.append(row)
     file.close()
     # Now open the file to write the new data
-    with open('motivation_level.csv', mode='w', newline='') as file:
+    with open('static/motivation_level.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['ID', 'Motivation Score'])
         for row in all_rows:
@@ -52,7 +52,7 @@ def calculate_score(user_id, row):
         score = (max_q3_q4 - row['Q2'] - row['Q5'] - row['Q6']) / (max_q3_q4 * 3)
     print(score)
     if not whetherFindCertainId(user_id, score):
-        with open('motivation_level.csv', mode='a', newline='') as file:
+        with open('static/motivation_level.csv', mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([user_id, score])
 

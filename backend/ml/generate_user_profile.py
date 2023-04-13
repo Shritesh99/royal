@@ -93,7 +93,7 @@ skill_level_df = pd.DataFrame(skill_level_data)
 motivation_level_df = pd.DataFrame(motivation_level_data)
 
 # Save the DataFrames to CSV files
-learning_style_df.to_csv("learning_style.csv", index=False)
-skill_level_df.to_csv("skill_level.csv", index=False)
-motivation_level_df.to_csv("motivation_level.csv", index=False)
+learning_style_df.to_csv("static/learning_style.csv", index=False)
+skill_level_df.to_csv("static/skill_level.csv", index=False)
+motivation_level_df.to_csv("static/motivation_level.csv", index=False)
 

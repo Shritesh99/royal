@@ -39,8 +39,6 @@ answers = {
 
 }
 
-
-
 # Define the MLE function
 def mle(data):
     input = []
@@ -52,7 +50,7 @@ def mle(data):
 
 def whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
     # Open the CSV file and read the contents
-    with open('learning_style.csv', mode='r') as file:
+    with open('static/learning_style.csv', mode='r') as file:
         reader = csv.reader(file)
 
         # Create an empty list to store all rows of data
@@ -74,7 +72,7 @@ def whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
             all_rows.append(row)
     file.close()
     # Now open the file to write the new data
-    with open('learning_style.csv', mode='w', newline='') as file:
+    with open('static/learning_style.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['ID', 'SI', 'VV', 'AR', 'SG'])
         for row in all_rows:
@@ -145,7 +143,7 @@ def determine_learning_style(user_id, answers):
 
 
     if not whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
-        with open('learning_style.csv', mode='a', newline='') as file:
+        with open('static/learning_style.csv', mode='a', newline='') as file:
             writer = csv.writer(file)
 
             # Write the row data to be added
