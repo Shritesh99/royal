@@ -70,6 +70,19 @@ class FSLSMQuestion(models.Model):
     def __str__(self):
         return str(self.text)
 
+class MotivationQuestion(models.Model):
+    order = models.IntegerField(unique=True, null=False)
+    text = models.TextField(blank=False)
+    choices = models.ManyToManyField(FSLSMChoice, blank=True)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Motivation Question'
+        verbose_name_plural = 'Motivation Questions'
+
+    def __str__(self):
+        return str(self.text)
+
 # class Goal(models.Model):
 #     topic_name = models.CharField(max_length=255)
 #     goal_accuracy = models.FloatField()
