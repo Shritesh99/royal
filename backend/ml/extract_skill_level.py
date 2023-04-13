@@ -25,70 +25,70 @@ def calculate_score(topic, time, difficulty, correct):
     return score
 
 # example
-gre_answers = {
-    1: {
-        'Topic': 1,
-        'time': 360,
-        'difficulty': 3,
-        'correct': 1
-    },
-    2: {
-        'Topic': 2,
-        'time': 180,
-        'difficulty': 2,
-        'correct': 0
-    },
-    3: {
-        'Topic': 4,
-        'time': 230,
-        'difficulty': 2,
-        'correct': 0
-    },
-    4: {
-        'Topic': 18,
-        'time': 180,
-        'difficulty': 2,
-        'correct': 0
-    },
-    5: {
-        'Topic': 10,
-        'time': 300,
-        'difficulty': 3,
-        'correct': 0
-    },
-    6: {
-        'Topic': 6,
-        'time': 360,
-        'difficulty': 3,
-        'correct': 1
-    },
-    7: {
-        'Topic': 14,
-        'time': 180,
-        'difficulty': 2,
-        'correct': 0
-    },
-    8: {
-        'Topic': 16,
-        'time': 180,
-        'difficulty': 2,
-        'correct': 0
-    },
-    9: {
-        'Topic': 13,
-        'time': 180,
-        'difficulty': 1,
-        'correct': 0
-    },
-    10: {
-        'Topic':5,
-        'time': 660,
-        'difficulty': 3,
-        'correct': 1
-    },
+# gre_answers = {
+#     1: {
+#         'Topic': 1,
+#         'time': 360,
+#         'difficulty': 3,
+#         'correct': 1
+#     },
+#     2: {
+#         'Topic': 2,
+#         'time': 180,
+#         'difficulty': 2,
+#         'correct': 0
+#     },
+#     3: {
+#         'Topic': 4,
+#         'time': 230,
+#         'difficulty': 2,
+#         'correct': 0
+#     },
+#     4: {
+#         'Topic': 18,
+#         'time': 180,
+#         'difficulty': 2,
+#         'correct': 0
+#     },
+#     5: {
+#         'Topic': 10,
+#         'time': 300,
+#         'difficulty': 3,
+#         'correct': 0
+#     },
+#     6: {
+#         'Topic': 6,
+#         'time': 360,
+#         'difficulty': 3,
+#         'correct': 1
+#     },
+#     7: {
+#         'Topic': 14,
+#         'time': 180,
+#         'difficulty': 2,
+#         'correct': 0
+#     },
+#     8: {
+#         'Topic': 16,
+#         'time': 180,
+#         'difficulty': 2,
+#         'correct': 0
+#     },
+#     9: {
+#         'Topic': 13,
+#         'time': 180,
+#         'difficulty': 1,
+#         'correct': 0
+#     },
+#     10: {
+#         'Topic':5,
+#         'time': 660,
+#         'difficulty': 3,
+#         'correct': 1
+#     },
 
 
-}
+# }
 
 def whetherFindCertainId(user_id, append_row):
     # Open the CSV file and read the contents
@@ -183,5 +183,5 @@ def extra_skill_level(user_id, gre_answers):
 
         file.close()
 
-extra_skill_level(1, gre_answers)
+# extra_skill_level(1, gre_answers)
 

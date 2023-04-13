@@ -8,7 +8,7 @@ from questions.models import GREQuestion
 from mock_test.models import MockTest
 from django.db.models import Count
 from ml.gpt import get_chatgpt_question
-
+from ml.extract_skill_level import extra_skill_level
 
 class GREChoices(DjangoObjectType):
     class Meta:
@@ -44,6 +44,7 @@ class SubmmitTestMutation(graphene.Mutation):
     @login_required
     def mutate(self, info, testId, response):
         mock_test = MockTest.objects.get(id=testId)
+        gre_answers=[]
         for item in response:
             question = GREQuestion.objects.get(id=item.questionId)
             correct = question.choices.get(id=item.choiceId).is_correct
@@ -51,9 +52,17 @@ class SubmmitTestMutation(graphene.Mutation):
                 question=question, correct=correct, time_taken=item.time_taken)
             mock_test.interactions.add(interaction)
             mock_test.save()
+            gre_answers.append({
+                'Topic': question.topic.no,
+                'time': time_taken,
+                'difficulty': question.difficulty,
+                'correct': 1 if correct else 0
+            })
+        
         user = AppUser.objects.get(user=info.context.user)
         user.is_first_test = False
         user.save()
+        extra_skill_level(user.user.id, gre_answers)
         return SubmmitTestMutation(success=True)
 
 
