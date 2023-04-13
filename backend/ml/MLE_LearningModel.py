@@ -156,7 +156,7 @@ def determine_learning_style(user_id, answers):
             writer.writerow(data)
 
         file.close()
-    return "%s-%s-%s-%s".format(styleSI, styleVV, styleAR, styleSG)
+    return "{0}-{1}-{2}-{3}".format(styleSI, styleVV, styleAR, styleSG)
 
 
 determine_learning_style(1001, answers)
