@@ -181,7 +181,7 @@ class Query(graphene.ObjectType):
                 choice.is_correct = i == answer_index
                 choice.save()
                 choices.append(choice)
-            grequestion.choices.add(*choice)
+            grequestion.choices.add(*choices)
             grequestion.save()
             questions.append(grequestion)
         random.shuffle(questions)
