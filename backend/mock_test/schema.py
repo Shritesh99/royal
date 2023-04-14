@@ -131,7 +131,7 @@ class Query(graphene.ObjectType):
         QuestionsType, testId=graphene.String(required=False))
 
     @login_required
-    def resolve_test(self, info, first, testId):
+    def resolve_test(self, info, testId):
         user = AppUser.objects.get(user=info.context.user)
         if testId is not None and testId != "":
             mock_test = MockTest.objects.get(id=testId)
