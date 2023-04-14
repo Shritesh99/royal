@@ -170,7 +170,6 @@ class Query(graphene.ObjectType):
         for i in range(10):
             get_difficulty, question, options, answer_index, explanation, ontology_tags = get_question(
                 user.user.id)
-            print(get_difficulty)
             grequestion = GREQuestion()
             grequestion.text = question
             grequestion.difficulty = difficulty_labels[get_difficulty]

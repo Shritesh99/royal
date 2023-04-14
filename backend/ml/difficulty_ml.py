@@ -60,7 +60,7 @@ def make_prediction(student_id):
     loaded_clf = load_model("static/decision_tree_model.pkl")
     # Predict using the loaded model
     y_pred = loaded_clf.predict(student_data)
-    print(y_pred)
+    return y_pred[0]
 
 #1st api
 #external module can call this api to train the model

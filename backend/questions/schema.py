@@ -62,7 +62,9 @@ class MotivationQuestionsMutation(graphene.Mutation):
         res = {}
         for item in response:
             res['Q'+item.question] = item.answer
-        user.mv_score = float(calculate_score(user.user.id, res))
+        f = float(calculate_score(user.user.id, res))
+        user.mv_score = f
+        print(f)
         user.save()
         return MotivationQuestionsMutation(success=True)
 
