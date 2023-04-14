@@ -34,7 +34,7 @@ class AppUser(models.Model):
     user_performance = models.ForeignKey(
         UserPerformance, on_delete=models.SET_NULL, null=True)
     mock_tests = models.ManyToManyField(MockTest, blank=True)
-    motivation = models.IntegerField(null=True, default=0)
+    motivation = models.FloatField(null=True, default=0)
 
     class Meta:
         verbose_name = 'Social Auth'
