@@ -173,7 +173,7 @@ class Query(graphene.ObjectType):
             grequestion = GREQuestion()
             grequestion.text = question
             grequestion.difficulty = difficulty_labels[get_difficulty]
-            grequestion.topic = ontology_tags
+            grequestion.topic = ontology_tags[0]
             for i in range(len(options)):
                 choice = Choice()
                 choice.text = options[i]
