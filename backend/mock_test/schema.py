@@ -174,17 +174,19 @@ class Query(graphene.ObjectType):
             grequestion.text = question
             grequestion.difficulty = difficulty_labels[get_difficulty]
             grequestion.topic = Topic.objects.get(text=ontology_tags[0])
+            choices = []
             for i in range(len(options)):
                 choice = Choice()
                 choice.text = options[i]
                 choice.is_correct = i == answer_index
                 choice.save()
-                grequestion.choices.add(choice)
+                choices.append(choice)
+            grequestion.choices.add(*choice)
             grequestion.save()
             questions.append(grequestion)
         random.shuffle(questions)
         mock_test = MockTest.objects.create()
-        mock_test.questions.add(*question)
+        mock_test.questions.add(*questions)
         mock_test.save()
         user = AppUser.objects.get(user=info.context.user)
         user.mock_tests.add(mock_test)
