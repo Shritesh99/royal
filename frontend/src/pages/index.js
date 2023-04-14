@@ -6,6 +6,7 @@ import {
 	DobGenderModalAtom,
 	AuthAtom,
 	FSLSMQuestionModalAtom,
+	MVAtom,
 } from "../atoms";
 import { User } from "../models";
 import { useEffect } from "react";
@@ -21,6 +22,8 @@ export default function Home({ props }) {
 	const [auth, setAuth] = useRecoilState(AuthAtom);
 	const [getFSLSMQuestionModalActive, setFSLSMQuestionModalActive] =
 		useRecoilState(FSLSMQuestionModalAtom);
+	const [getMVQuestionModalActive, setMVQuestionModalActive] =
+		useRecoilState(MVAtom);
 
 	useEffect(() => {
 		if (!isLoggedIn) {
@@ -31,6 +34,8 @@ export default function Home({ props }) {
 			if (!auth.dob || !auth.gender) return setDobGenderModal(true);
 			if (!auth.ls && auth.ls !== "")
 				return setFSLSMQuestionModalActive(true);
+			if (!auth.motivation && auth.motivation === 0)
+				return setMVQuestionModalActive(true);
 		}
 	}, [isLoggedIn]);
 

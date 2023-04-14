@@ -2,7 +2,12 @@ import Link from "next/link";
 import { googleLogout } from "@react-oauth/google";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
-import { AuthAtom, isLoggedInSelector, FSLSMQuestionModalAtom } from "../atoms";
+import {
+	AuthAtom,
+	isLoggedInSelector,
+	FSLSMQuestionModalAtom,
+	MVAtom,
+} from "../atoms";
 
 export const Header = () => {
 	const router = useRouter();
@@ -10,6 +15,9 @@ export const Header = () => {
 	const isLoggedIn = useRecoilValue(isLoggedInSelector);
 	const [getFSLSMQuestionModalActive, setFSLSMQuestionModalActive] =
 		useRecoilState(FSLSMQuestionModalAtom);
+	const [getMVQuestionModalActive, setMVQuestionModalActive] =
+		useRecoilState(MVAtom);
+
 	const signOut = () => {
 		googleLogout();
 		setAuth(null);
@@ -52,6 +60,15 @@ export const Header = () => {
 											)
 										}>
 										Set Learning style
+									</button>
+									<button
+										className="navbar-item button is-white"
+										onClick={() =>
+											setMVQuestionModalActive(
+												true
+											)
+										}>
+										Set Motivation Level
 									</button>
 									<hr className="navbar-divider" />
 									<a

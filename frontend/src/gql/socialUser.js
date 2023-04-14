@@ -9,6 +9,7 @@ export default gql`
 				dob
 				gender
 				ls
+				motivation
 				user {
 					firstName
 					lastName

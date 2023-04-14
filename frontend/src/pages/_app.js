@@ -11,6 +11,7 @@ import {
 	Layout,
 	Loading,
 	FSLSMQuestionModal,
+	MVModal,
 } from "../components";
 import { ToastContainer, toast } from "react-toastify";
 import { ApolloProvider, useLazyQuery } from "@apollo/client";
@@ -61,6 +62,7 @@ function Application({ Component, pageProps, props }) {
 				<>
 					<DobGenderModal />
 					<FSLSMQuestionModal />
+					<MVModal />
 				</>
 			) : (
 				<></>

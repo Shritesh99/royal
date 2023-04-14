@@ -7,5 +7,6 @@ export class User {
 		this.gender = data.gender;
 		this.picture = data.picture;
 		this.ls = data.ls;
+		this.motivation = data.motivation;
 	}
 }

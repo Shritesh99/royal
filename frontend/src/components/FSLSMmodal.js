@@ -8,7 +8,7 @@ import { Loading } from "./Loading";
 
 export const FSLSMQuestionModal = () => {
 	const [data, setData] = useState(null);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [answered, setAnswered] = useState([]);
 	const [err, setErr] = useRecoilState(ErrorAtom);
 	const [getFSLSMQuestionModalActive, setFSLSMQuestionModalActive] =
@@ -17,6 +17,7 @@ export const FSLSMQuestionModal = () => {
 	const [getQuestions] = useLazyQuery(FSLSMQuestions, {
 		onCompleted: (response) => {
 			setData(response.fslsmQuestions);
+			setLoading(false);
 		},
 		onError: (error) => {
 			setErr(error.message);
@@ -43,7 +44,8 @@ export const FSLSMQuestionModal = () => {
 	}, []);
 
 	const onSubmit = () => {
-		if (answered.length !== 10) return setErr("Fill the form fully");
+		if (answered.length !== data.length)
+			return setErr("Fill the form fully");
 		setFslsmquestionsResponse({
 			variables: { res: answered },
 		});

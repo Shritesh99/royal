@@ -20,21 +20,11 @@ export default function Exam() {
 	const prevCountRef = useRef();
 	const [timeTaken, setTimeTaken] = useState([]);
 
-	const {
-		seconds,
-		minutes,
-		hours,
-		days,
-		isRunning,
-		start,
-		pause,
-		resume,
-		restart,
-	} = useTimer({
+	const { seconds, minutes } = useTimer({
 		expiryTimestamp: new Date().setSeconds(
 			new Date().getSeconds() + 30 * 60
 		),
-		onExpire: () => router.replace("/auth"),
+		onExpire: () => router.replace("/"),
 	});
 
 	useEffect(() => {
@@ -53,7 +43,7 @@ export default function Exam() {
 		onCompleted: (data) => {
 			setTestId(data.test.testId);
 			setQuestions(data.test.questions);
-			const arr = Array(10)
+			const arr = Array(data.test.questions.length)
 				.fill()
 				.map(() => ({
 					startTime: null,
