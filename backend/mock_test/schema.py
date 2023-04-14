@@ -58,7 +58,7 @@ class SubmmitTestMutation(graphene.Mutation):
             total_time += item.time_taken
             gre_answers.append({
                 'Topic': question.topic.no,
-                'time': time_taken,
+                'time': item.time_taken,
                 'difficulty': question.difficulty,
                 'correct': 1 if correct else 0
             })
