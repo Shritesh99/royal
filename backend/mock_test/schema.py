@@ -170,7 +170,14 @@ class Query(graphene.ObjectType):
         for i in range(10):
             get_difficulty, question, options, answer_index, explanation, ontology_tags = get_question(
                 user.user.id)
-            grequestion = GREQuestion.objects.create(text=question, difficulty=difficulty_labels[get_difficulty], topic=Topic.objects.get(text=ontology_tags[0]))
+            try:
+                topic = Topic.objects.get(text=ontology_tags[0])
+            except Exception as err:
+                print(err)
+                print(ontology_tags)
+                print(ontology_tags[0])
+                topic = None
+            grequestion = GREQuestion.objects.create(text=question, difficulty=difficulty_labels[get_difficulty], topic=topic)
             choices = []
             for i in range(len(options)):
                 choice = Choice.objects.create(text=options[i], is_correct= i == answer_index)
