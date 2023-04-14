@@ -26,7 +26,11 @@ class SocialAuthMutation(graphql_social_auth.SocialAuthMutation):
     @classmethod
     def resolve(cls, root, info, social, **kwargs):
         extra_data = social.extra_data
-        user = AppUser.objects.get(user=social.user)
+        try:
+            user = AppUser.objects.get(user=social.user)
+        except err:
+            user= None
+            print(err)
         if not user:	       
             user = AppUser(user=social.user, picture=extra_data['picture'])
             user.save()
