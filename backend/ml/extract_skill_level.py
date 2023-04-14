@@ -147,9 +147,7 @@ def extra_skill_level(user_id, gre_answers):
     total_score = 0
 
     # Iterate over all key values in the dictionary
-    for key in gre_answers:
-        # from key get value
-        value = gre_answers[key]
+    for value in gre_answers:
         # get info from value
         topic = value['Topic']
         time = value['time']
@@ -182,6 +180,7 @@ def extra_skill_level(user_id, gre_answers):
             writer.writerow(new_row)
 
         file.close()
+    return total_score
 
 # extra_skill_level(1, gre_answers)
 
