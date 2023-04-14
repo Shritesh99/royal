@@ -170,16 +170,10 @@ class Query(graphene.ObjectType):
         for i in range(10):
             get_difficulty, question, options, answer_index, explanation, ontology_tags = get_question(
                 user.user.id)
-            grequestion = GREQuestion()
-            grequestion.text = question
-            grequestion.difficulty = difficulty_labels[get_difficulty]
-            grequestion.topic = Topic.objects.get(text=ontology_tags[0])
+            grequestion = GREQuestion.objects.create(text=question, difficulty=difficulty_labels[get_difficulty], topic=Topic.objects.get(text=ontology_tags[0]))
             choices = []
             for i in range(len(options)):
-                choice = Choice()
-                choice.text = options[i]
-                choice.is_correct = i == answer_index
-                choice.save()
+                choice = Choice.objects.create(text=options[i], is_correct= i == answer_index)
                 choices.append(choice)
             grequestion.choices.add(*choices)
             grequestion.save()
