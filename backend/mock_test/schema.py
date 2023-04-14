@@ -137,63 +137,62 @@ class Query(graphene.ObjectType):
         if testId is not None and testId != "":
             mock_test = MockTest.objects.get(id=testId)
             return QuestionsType(success=True, test_id=mock_test.id, questions=mock_test.questions.all())
-        # if user.is_first_test:
+        if user.is_first_test:
+            num_questions_per_difficulty = 2
+            difficulty_levels = GREQuestion.objects.values_list(
+                'difficulty', flat=True).distinct()
+            questions = []
+
+            for level in difficulty_levels:
+                qs = GREQuestion.objects.filter(difficulty=level).annotate(
+                    num_choices=Count('choices'))
+                question_ids = [q.id for q in qs if q.num_choices > 0]
+                if len(question_ids) >= num_questions_per_difficulty:
+                    questions.extend(random.sample(
+                        question_ids, num_questions_per_difficulty))
+                else:
+                    questions.extend(question_ids)
+
+            selected_questions = list(
+                GREQuestion.objects.filter(id__in=questions))
+            random.shuffle(selected_questions)
+            mock_test = MockTest.objects.create()
+            mock_test.questions.add(*selected_questions)
+            mock_test.save()
+            user.mock_tests.add(mock_test)
+            user.save()
+            return QuestionsType(success=True, test_id=mock_test.id, questions=mock_test.questions.all())
+        # TODO: ChatGPT based tests
         num_questions_per_difficulty = 2
         difficulty_levels = GREQuestion.objects.values_list(
             'difficulty', flat=True).distinct()
         questions = []
 
-        for level in difficulty_levels:
-            qs = GREQuestion.objects.filter(difficulty=level).annotate(
-                num_choices=Count('choices'))
-            question_ids = [q.id for q in qs if q.num_choices > 0]
-            if len(question_ids) >= num_questions_per_difficulty:
-                questions.extend(random.sample(
-                    question_ids, num_questions_per_difficulty))
-            else:
-                questions.extend(question_ids)
-
-        selected_questions = list(
-            GREQuestion.objects.filter(id__in=questions))
-        random.shuffle(selected_questions)
+        for i in range(10):
+            get_difficulty, question, options, answer_index, explanation, ontology_tags = get_question(
+                user.user.id)
+            try:
+                topic = Topic.objects.get(text=''.join(ontology_tags))
+            except Exception as err:
+                topic = None
+            grequestion = GREQuestion.objects.create(
+                text=question, difficulty=difficulty_labels[get_difficulty], topic=topic)
+            choices = []
+            for i in range(len(options)):
+                choice = Choice.objects.create(
+                    text=options[i], is_correct=i == answer_index)
+                choices.append(choice)
+            grequestion.choices.add(*choices)
+            grequestion.save()
+            questions.append(grequestion)
+        random.shuffle(questions)
         mock_test = MockTest.objects.create()
-        mock_test.questions.add(*selected_questions)
+        mock_test.questions.add(*questions)
         mock_test.save()
+        user = AppUser.objects.get(user=info.context.user)
         user.mock_tests.add(mock_test)
         user.save()
         return QuestionsType(success=True, test_id=mock_test.id, questions=mock_test.questions.all())
-        # TODO: ChatGPT based tests
-        # num_questions_per_difficulty = 2
-        # difficulty_levels = GREQuestion.objects.values_list(
-        #     'difficulty', flat=True).distinct()
-        # questions = []
-
-        # for i in range(10):
-        #     get_difficulty, question, options, answer_index, explanation, ontology_tags = get_question(
-        #         user.user.id)
-        #     try:
-        #         topic = Topic.objects.get(text=ontology_tags[0])
-        #     except Exception as err:
-        #         print(err)
-        #         print(ontology_tags)
-        #         print(ontology_tags[0])
-        #         topic = None
-        #     grequestion = GREQuestion.objects.create(text=question, difficulty=difficulty_labels[get_difficulty], topic=topic)
-        #     choices = []
-        #     for i in range(len(options)):
-        #         choice = Choice.objects.create(text=options[i], is_correct= i == answer_index)
-        #         choices.append(choice)
-        #     grequestion.choices.add(*choices)
-        #     grequestion.save()
-        #     questions.append(grequestion)
-        # random.shuffle(questions)
-        # mock_test = MockTest.objects.create()
-        # mock_test.questions.add(*questions)
-        # mock_test.save()
-        # user = AppUser.objects.get(user=info.context.user)
-        # user.mock_tests.add(mock_test)
-        # user.save()
-        # return QuestionsType(success=True, test_id=mock_test.id, questions=mock_test.questions.all())
 
 
 class Mutation(graphene.ObjectType):
