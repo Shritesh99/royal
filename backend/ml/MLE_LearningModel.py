@@ -2,30 +2,20 @@ import numpy as np
 import csv
 
 # Define the dimensions and their associated questions
+
+
 def getDimensions():
     dimensions = {
         "Sensing-Intuition": ["1"],
-        "Visual-Verbal": ["2", "3", "10"],
+        "Visual-Verbal": ["2", "3","5", "10"],
         "Active-Reflective": ["6", "8", "9"],
         "Sequential-Global": ["4", "7"],
-        "Sensitive-Resilient": ["5"]
     }
     return dimensions
 
 
 # Define the answers for each question
 answers = {
-    # "1": "B",
-    # "2": "B",
-    # "3": "A",
-    # "4": "A",
-    # "5": "A",
-    # "6": "B",
-    # "7": "B",
-    # "8": "A",
-    # "9": "A",
-    # "10": "B"
-
     "1": "B",
     "2": "A",
     "3": "A",
@@ -40,6 +30,8 @@ answers = {
 }
 
 # Define the MLE function
+
+
 def mle(data):
     input = []
     # for d in data:
@@ -47,6 +39,7 @@ def mle(data):
     # Calculate the MLE estimate for each dimension
     estimates = np.apply_along_axis(lambda x: np.mean(x), 1, data)
     return estimates
+
 
 def whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
     # Open the CSV file and read the contents
@@ -83,6 +76,8 @@ def whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
     return found_id
 
 # Calculate the MLE estimates for each dimension
+
+
 def determine_learning_style(user_id, answers):
     dimensions = getDimensions()
 
@@ -92,7 +87,7 @@ def determine_learning_style(user_id, answers):
     # Define the responses
     responses = {
         "A": 1,
-        "B": 0
+        "B": -1
     }
 
     # Initialize the data matrix with zeros
@@ -139,8 +134,6 @@ def determine_learning_style(user_id, answers):
         'AR': styleAR,
         'SG': styleSG
     }
-    print(learning_style)
-
 
     if not whetherFindCertainId(user_id, styleSI, styleVV, styleAR, styleSG):
         with open('static/learning_style.csv', mode='a', newline='') as file:
@@ -151,6 +144,7 @@ def determine_learning_style(user_id, answers):
             writer.writerow(data)
 
         file.close()
+    return "{0}-{1}-{2}-{3}".format(styleSI, styleVV, styleAR, styleSG)
 
 
 determine_learning_style(1001, answers)

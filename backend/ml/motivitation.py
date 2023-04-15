@@ -58,13 +58,12 @@ def calculate_score(user_id, row):
         # The lower the Q4, Q5, Q6 scores, and the higher the Q3, Q4 scores, the higher the score
         max_q3_q2 = max(row['Q3'], row['Q2'])
         score = (max_q3_q2 - row['Q4'] - row['Q5'] - row['Q6']) / max_q3_q2
-    print(score)
     if not whetherFindCertainId(user_id, score):
         with open('static/motivation_level.csv', mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([user_id, score])
 
         file.close()
+    return score
 
-
-calculate_score(1001, row)
+# calculate_score(1001, row)

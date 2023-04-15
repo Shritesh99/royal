@@ -11,10 +11,10 @@ def select_top_topics(skill_levels, num_topics):
     
 
 def generate_question_request(difficulty_level, topics, learning_style):
-    request = f"Can you give me a {difficulty_level} question in GRE quantitative reasoning about {', '.join(topics)}?"
+    request = f"Generate a {difficulty_level} question in GRE quantitative reasoning about {', '.join(topics)}?"
 
-    if learning_style['VV'] == 'Visual':
-        request += " Please include figures in the question."
+    # if learning_style['VV'] == 'Visual':
+    #     request += " Please include figures in the question."
 
     if learning_style['SI'] == 'Sensing':
         request += " The question should involve real-world examples and practical applications."
@@ -25,12 +25,7 @@ def generate_question_request(difficulty_level, topics, learning_style):
         request += " Please provide opportunities for hands-on problem-solving."
     else:
         request += " Please provide opportunities for individual reflection and analysis."
-
-    if learning_style['SG'] == 'Sequential':
-        request += " The question should be broken down into a series of smaller, well-organized steps."
-    else:
-        request += " The question should involve a holistic approach and require understanding of the bigger picture."
-
+    
     return request
 
 # external module can call this api by given 2 parameters:
@@ -70,7 +65,7 @@ def generate_question(student_id, difficulty_level):
     }
 
     # Select the top 3 topics based on the student's skill levels
-    top_topics = select_top_topics(skill_levels, 3)
+    top_topics = select_top_topics(skill_levels, 1)
 
     # Generate a question request based on the difficulty level, top topics, and learning style
     question_request = generate_question_request(difficulty, top_topics, learning_style)
