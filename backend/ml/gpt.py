@@ -12,7 +12,6 @@ openai.api_key = env("OPENAI_KEY")
 
 def get_chatgpt_question(prompt):
 
-    # openai.api_key = "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"
     # Set the parameters for the completion
     response = openai.Completion.create(
         engine="text-davinci-003",
