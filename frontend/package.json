@@ -9,10 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.10",
+    "@react-oauth/google": "^0.9.0",
+    "csrf-token": "^1.1.0",
+    "date-fns": "^2.29.3",
+    "formik": "^2.2.9",
+    "graphql": "^16.6.0",
+    "js-cookie": "^3.0.1",
     "next": "13.2.3",
     "react": "18.2.0",
+    "react-day-picker": "^8.6.0",
     "react-dom": "18.2.0",
     "react-loader-spinner": "^5.3.4",
+    "react-timer-hook": "^3.0.5",
+    "react-toastify": "^9.1.2",
     "recoil": "^0.7.7"
   }
 }
